@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeAll } from "vitest";
+import { spawn } from "child_process";
 import {
   normalizeUrl,
   sameOrigin,
@@ -10,6 +11,7 @@ import {
   findBrokenCanonicalIssues,
   groupIssues,
   prioritizeIssues,
+  installOpenCodeTool,
 } from "./index";
 
 describe("normalizeUrl", () => {
@@ -473,5 +475,50 @@ describe("prioritizeIssues", () => {
     expect(sorted[0].severity).toBe("high");
     expect(sorted[1].severity).toBe("medium");
     expect(sorted[2].severity).toBe("low");
+  });
+});
+
+describe("installOpenCodeTool", () => {
+  it("should generate valid TypeScript code", async () => {
+    const fs = await import("fs/promises");
+    const path = await import("path");
+    const os = await import("os");
+    
+    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), "fixseo-test-"));
+    const originalCwd = process.cwd();
+    
+    try {
+      process.chdir(tmpDir);
+      await installOpenCodeTool();
+      
+      const toolPath = path.join(tmpDir, ".opencode/tools/fixseo.ts");
+      const content = await fs.readFile(toolPath, "utf-8");
+      
+      // Verify key parts of the generated code exist
+      expect(content).toContain('import { tool } from "@opencode-ai/plugin"');
+      expect(content).toContain("export default tool(");
+      expect(content).toContain("args.url");
+      expect(content).toContain("fixseo");
+      expect(content).toContain("--markdown");
+      
+      // Verify it's valid TypeScript by checking it compiles
+      // We use bun build to check syntax (will fail if syntax is invalid)
+      const proc = spawn("bun", ["build", toolPath, "--no-bundle", "--outfile=/dev/null"]);
+      
+      // Wait for the process to complete
+      await new Promise<void>((resolve) => {
+        proc.on("close", () => resolve());
+        proc.on("error", () => resolve());
+      });
+      
+      // Read stderr to check for syntax errors
+      const stderr = await new Response(proc.stderr).text();
+      expect(stderr).not.toContain("error:");
+      expect(stderr).not.toContain("Expected");
+      expect(stderr).not.toContain("Unterminated");
+    } finally {
+      process.chdir(originalCwd);
+      await fs.rm(tmpDir, { recursive: true, force: true });
+    }
   });
 });

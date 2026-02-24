@@ -967,7 +967,7 @@ export async function serveHtmlReport(html: string, port = 5353) {
   return server;
 }
 
-async function installOpenCodeTool() {
+export async function installOpenCodeTool() {
   const fs = await import("fs/promises");
   const path = await import("path");
 
@@ -983,11 +983,12 @@ export default tool({
   },
   async execute(args) {
     const cmd = ["npx", "-y", "fixseo", args.url, "--markdown"]
-    if (args.maxPages) cmd.push(\`--max-pages=\${args.maxPages}\`)
-    if (args.maxDepth) cmd.push(\`--max-depth=\${args.maxDepth}\`)
+    if (args.maxPages) cmd.push("--max-pages=" + args.maxPages)
+    if (args.maxDepth) cmd.push("--max-depth=" + args.maxDepth)
     if (args.includeSitemap === false) cmd.push("--no-sitemap")
 
-    const result = await Bun.\`\${cmd}\`.text()
+    const proc = Bun.spawn(cmd)
+    const result = await new Response(proc.stdout).text()
     return result
   },
 })
