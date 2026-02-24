@@ -932,8 +932,59 @@ export async function serveHtmlReport(html: string, port = 5353) {
   return server;
 }
 
+async function installOpenCodeTool() {
+  const fs = await import("fs/promises");
+  const path = await import("path");
+  
+  const toolCode = `import { tool } from "@opencode-ai/plugin"
+
+export default tool({
+  description: "Scan a website for SEO issues and get a detailed report",
+  args: {
+    url: tool.schema.string().describe("The URL to scan for SEO issues"),
+    maxPages: tool.schema.number().optional().describe("Maximum pages to crawl (default: 25)"),
+    maxDepth: tool.schema.number().optional().describe("Maximum crawl depth (default: 10)"),
+    includeSitemap: tool.schema.boolean().optional().describe("Use sitemap to discover pages (default: true)"),
+  },
+  async execute(args) {
+    const result = await import("fixseo").then(m =>
+      m.execute({
+        url: args.url,
+        maxPages: args.maxPages ?? 25,
+        maxDepth: args.maxDepth ?? 10,
+        includeSitemap: args.includeSitemap ?? true,
+      })
+    )
+    const { generateMarkdownReport } = await import("fixseo")
+    return generateMarkdownReport(result)
+  },
+})
+`;
+
+  const toolDir = path.join(process.cwd(), ".opencode/tools");
+  const toolPath = path.join(toolDir, "fixseo.ts");
+
+  try {
+    await fs.mkdir(toolDir, { recursive: true });
+    await fs.writeFile(toolPath, toolCode);
+    console.log("✅ OpenCode tool installed!");
+    console.log(`   Created: ${toolPath}`);
+    console.log("");
+    console.log("Usage in OpenCode: fixseo https://example.com");
+  } catch (e) {
+    console.error("Failed to install OpenCode tool:", e);
+    process.exit(1);
+  }
+}
+
 async function main() {
   const args = process.argv.slice(2);
+  
+  if (args[0] === "opencode") {
+    await installOpenCodeTool();
+    return;
+  }
+  
   const outputHtml = args.includes("--html") || args.includes("-h");
   const outputMarkdown = args.includes("--markdown") || args.includes("-m");
   const serve = args.includes("--serve") || args.includes("-s");
@@ -958,8 +1009,9 @@ async function main() {
   }
 
   if (!url) {
-    console.error("Usage: seocheck <url> [options]");
-    console.error("       npx seocheck <url> [options]");
+    console.error("Usage: fixseo <url> [options]");
+    console.error("       npx fixseo <url> [options]");
+    console.error("       npx fixseo opencode  # Install OpenCode tool");
     console.error("Options:");
     console.error("  --html, -h         Output HTML report");
     console.error("  --markdown, -m     Output Markdown report");

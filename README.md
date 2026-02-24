@@ -40,6 +40,16 @@ npm install -g fixseo
 npx fixseo <url>
 ```
 
+## Quick Start
+
+```bash
+# Scan a website
+npx fixseo https://example.com
+
+# Install OpenCode tool for AI agents
+npx fixseo opencode
+```
+
 ## CLI Usage
 
 ```bash
@@ -89,6 +99,7 @@ Parameters:
 
 | Option | Short | Description | Default |
 |--------|-------|-------------|---------|
+| `opencode` | - | Install OpenCode tool in `.opencode/tools/` | - |
 | `--html` | `-h` | Output HTML report | - |
 | `--markdown` | `-m` | Output Markdown report | - |
 | `--serve` | `-s` | Serve HTML report locally (opens browser) | - |

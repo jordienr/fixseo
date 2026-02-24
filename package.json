@@ -14,7 +14,8 @@
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "pub": "npm publish --access public"
   },
   "keywords": [
     "seo",
