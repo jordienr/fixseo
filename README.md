@@ -4,6 +4,23 @@ A command-line SEO analysis tool that crawls websites and generates structured r
 
 Also works as an OpenCode tool for AI agents.
 
+## Table of Contents
+
+- [Features](#features)
+- [Installation](#installation)
+- [CLI Usage](#cli-usage)
+- [OpenCode Tool Usage](#opencode-tool-usage)
+- [CLI Options](#cli-options)
+- [Output Formats](#output-formats)
+- [Programmatic Usage](#programmatic-usage)
+- [API](#api)
+- [SEO Checks](#seo-checks)
+- [Development](#development)
+- [Test Coverage](#test-coverage)
+- [Architecture](#architecture)
+- [Tech Stack](#tech-stack)
+- [License](#license)
+
 ## Features
 
 - **Multi-format output**: JSON, HTML, Markdown
