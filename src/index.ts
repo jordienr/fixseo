@@ -158,10 +158,7 @@ export function parsePageHtml(html: string, url: string): PageData | null {
 }
 
 function extractPageData(doc: Document, url: string): PageData {
-  const getMetaContent = (
-    name: string,
-    isProperty = false,
-  ): string | null => {
+  const getMetaContent = (name: string, isProperty = false): string | null => {
     const el = isProperty
       ? doc.querySelector(`meta[property="${name}"]`)
       : doc.querySelector(`meta[name="${name}"]`);
@@ -194,12 +191,10 @@ function extractPageData(doc: Document, url: string): PageData {
   const twitterImage = getMetaContent("twitter:image");
 
   const jsonLd: string[] = [];
-  doc
-    .querySelectorAll('script[type="application/ld+json"]')
-    .forEach((el) => {
-      const content = el.textContent?.trim();
-      if (content) jsonLd.push(content);
-    });
+  doc.querySelectorAll('script[type="application/ld+json"]').forEach((el) => {
+    const content = el.textContent?.trim();
+    if (content) jsonLd.push(content);
+  });
 
   let imagesTotal = 0;
   let imagesWithAlt = 0;
@@ -241,12 +236,25 @@ function extractPageData(doc: Document, url: string): PageData {
   };
 }
 
-export function analyzePage(
-  page: PageData,
-  isHttps: boolean,
-): Issue[] {
+export function analyzePage(page: PageData, isHttps: boolean): Issue[] {
   const issues: Issue[] = [];
-  const { url, title, metaDescription, h1, canonical, robotsMeta, jsonLd, imagesTotal, imagesWithAlt, status, hreflangs, ogTitle, ogDescription, ogImage, twitterCard } = page;
+  const {
+    url,
+    title,
+    metaDescription,
+    h1,
+    canonical,
+    robotsMeta,
+    jsonLd,
+    imagesTotal,
+    imagesWithAlt,
+    status,
+    hreflangs,
+    ogTitle,
+    ogDescription,
+    ogImage,
+    twitterCard,
+  } = page;
 
   if (!title)
     issues.push({
@@ -374,9 +382,7 @@ export function analyzePage(
   return issues;
 }
 
-export function findDuplicateIssues(
-  pages: PageData[],
-): Issue[] {
+export function findDuplicateIssues(pages: PageData[]): Issue[] {
   const issues: Issue[] = [];
   const titleMap = new Map<string, string[]>();
   const metaMap = new Map<string, string[]>();
@@ -434,9 +440,7 @@ export function findDuplicateIssues(
   return issues;
 }
 
-export function findBrokenCanonicalIssues(
-  pages: PageData[],
-): Issue[] {
+export function findBrokenCanonicalIssues(pages: PageData[]): Issue[] {
   const issues: Issue[] = [];
   const pageUrls = new Set(pages.map((p) => p.url));
 
@@ -457,7 +461,9 @@ export function findBrokenCanonicalIssues(
   return issues;
 }
 
-export function groupIssues(issues: Issue[]): (Issue & { count: number; urls: string[] })[] {
+export function groupIssues(
+  issues: Issue[],
+): (Issue & { count: number; urls: string[] })[] {
   const grouped = issues.reduce(
     (acc, issue) => {
       const key = `${issue.severity}-${issue.code}`;
@@ -500,9 +506,7 @@ export async function fetchSitemapUrls(
 
       const sitemapUrls: string[] =
         parsed?.urlset?.url?.map((u: any) => u.loc).filter(Boolean) ??
-        parsed?.sitemapindex?.sitemap
-          ?.map((s: any) => s.loc)
-          .filter(Boolean) ??
+        parsed?.sitemapindex?.sitemap?.map((s: any) => s.loc).filter(Boolean) ??
         [];
 
       for (const u of sitemapUrls.slice(0, maxPages)) {
@@ -581,7 +585,9 @@ export default async function execute(args: Args) {
       if (depth > maxDepth) continue;
 
       visited.add(url);
-      process.stdout.write(`\r📄 Scanned: ${visited.size} pages | Queue: ${queue.length}    `);
+      process.stdout.write(
+        `\r📄 Scanned: ${visited.size} pages | Queue: ${queue.length}    `,
+      );
 
       let res: Response;
       try {
@@ -709,10 +715,14 @@ export function generateMarkdownReport(result: ScanResult): string {
 
   const severityEmoji = (severity: string) => {
     switch (severity) {
-      case "high": return "🔴";
-      case "medium": return "🟡";
-      case "low": return "🔵";
-      default: return "⚪";
+      case "high":
+        return "🔴";
+      case "medium":
+        return "🟡";
+      case "low":
+        return "🔵";
+      default:
+        return "⚪";
     }
   };
 
@@ -720,10 +730,14 @@ export function generateMarkdownReport(result: ScanResult): string {
 
   lines.push(`# 🔍 SEO Scan Report`);
   lines.push(``);
-  lines.push(`**Scanned:** ${scanned.pagesScanned} pages from ${scanned.startUrl}`);
+  lines.push(
+    `**Scanned:** ${scanned.pagesScanned} pages from ${scanned.startUrl}`,
+  );
   lines.push(`**Date:** ${new Date(scanned.scannedAt).toLocaleString()}`);
   if (scanned.pagesScanned >= scanned.maxPages) {
-    lines.push(`⚠️ **Reached max pages limit (${scanned.maxPages}). More pages may exist.**`);
+    lines.push(
+      `⚠️ **Reached max pages limit (${scanned.maxPages}). More pages may exist.**`,
+    );
   }
   lines.push(``);
   lines.push(`## Summary`);
@@ -769,10 +783,14 @@ export function generateHtmlReport(result: ScanResult): string {
 
   const severityColor = (severity: string) => {
     switch (severity) {
-      case "high": return "#ef4444";
-      case "medium": return "#f59e0b";
-      case "low": return "#3b82f6";
-      default: return "#6b7280";
+      case "high":
+        return "#ef4444";
+      case "medium":
+        return "#f59e0b";
+      case "low":
+        return "#3b82f6";
+      default:
+        return "#6b7280";
     }
   };
 
@@ -784,19 +802,34 @@ export function generateHtmlReport(result: ScanResult): string {
     }
   };
 
-  const escapeHtml = (str: string) => str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const escapeHtml = (str: string) =>
+    str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
-  const issueRows = groupedIssues.map(issue => `
+  const issueRows = groupedIssues
+    .map(
+      (issue) => `
     <tr>
       <td><span class="severity-badge" style="background: ${severityColor(issue.severity)}">${issue.severity}</span></td>
       <td>${escapeHtml(issue.message)}</td>
       <td>${issue.count}</td>
-      <td>${issue.urls.slice(0, 5).map(url => `<a href="${escapeHtml(url)}" target="_blank">${escapeHtml(getUrlPath(url))}</a>`).join("<br>")}${issue.urls.length > 5 ? `<br><em>...and ${issue.urls.length - 5} more</em>` : ""}</td>
+      <td>${issue.urls
+        .slice(0, 5)
+        .map(
+          (url) =>
+            `<a href="${escapeHtml(url)}" target="_blank">${escapeHtml(getUrlPath(url))}</a>`,
+        )
+        .join(
+          "<br>",
+        )}${issue.urls.length > 5 ? `<br><em>...and ${issue.urls.length - 5} more</em>` : ""}</td>
       <td>${issue.recommendation ? escapeHtml(issue.recommendation) : ""}</td>
     </tr>
-  `).join("");
+  `,
+    )
+    .join("");
 
-  const pageRows = pages.map(page => `
+  const pageRows = pages
+    .map(
+      (page) => `
     <tr>
       <td><a href="${escapeHtml(page.url)}" target="_blank">${escapeHtml(getUrlPath(page.url))}</a></td>
       <td>${page.status}</td>
@@ -806,7 +839,9 @@ export function generateHtmlReport(result: ScanResult): string {
       <td>${page.ogTitle ? "✓" : "<span class='missing'>✗</span>"}</td>
       <td>${page.jsonLd ? "✓" : "<span class='missing'>✗</span>"}</td>
     </tr>
-  `).join("");
+  `,
+    )
+    .join("");
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -868,7 +903,7 @@ export function generateHtmlReport(result: ScanResult): string {
 
     <h2>📄 Scanned URLs (${pages.length})</h2>
     <div class="url-list">
-      ${pages.map(p => `<a href="${escapeHtml(p.url)}" target="_blank">${escapeHtml(getUrlPath(p.url))}</a>`).join("")}
+      ${pages.map((p) => `<a href="${escapeHtml(p.url)}" target="_blank">${escapeHtml(getUrlPath(p.url))}</a>`).join("")}
     </div>
 
     <h2>📋 Issues</h2>
@@ -921,7 +956,7 @@ export async function serveHtmlReport(html: string, port = 5353) {
 
   const url = `http://localhost:${server.port}`;
   console.log(`\n🌐 Opening SEO report at ${url}\n`);
-  
+
   // Open in browser (macOS)
   try {
     await Bun.spawn(["open", url]);
@@ -935,7 +970,7 @@ export async function serveHtmlReport(html: string, port = 5353) {
 async function installOpenCodeTool() {
   const fs = await import("fs/promises");
   const path = await import("path");
-  
+
   const toolCode = `import { tool } from "@opencode-ai/plugin"
 
 export default tool({
@@ -947,16 +982,13 @@ export default tool({
     includeSitemap: tool.schema.boolean().optional().describe("Use sitemap to discover pages (default: true)"),
   },
   async execute(args) {
-    const result = await import("fixseo").then(m =>
-      m.execute({
-        url: args.url,
-        maxPages: args.maxPages ?? 25,
-        maxDepth: args.maxDepth ?? 10,
-        includeSitemap: args.includeSitemap ?? true,
-      })
-    )
-    const { generateMarkdownReport } = await import("fixseo")
-    return generateMarkdownReport(result)
+    const cmd = ["npx", "-y", "fixseo", args.url, "--markdown"]
+    if (args.maxPages) cmd.push(\`--max-pages=\${args.maxPages}\`)
+    if (args.maxDepth) cmd.push(\`--max-depth=\${args.maxDepth}\`)
+    if (args.includeSitemap === false) cmd.push("--no-sitemap")
+
+    const result = await Bun.\`\${cmd}\`.text()
+    return result
   },
 })
 `;
@@ -979,12 +1011,12 @@ export default tool({
 
 async function main() {
   const args = process.argv.slice(2);
-  
+
   if (args[0] === "opencode") {
     await installOpenCodeTool();
     return;
   }
-  
+
   const outputHtml = args.includes("--html") || args.includes("-h");
   const outputMarkdown = args.includes("--markdown") || args.includes("-m");
   const serve = args.includes("--serve") || args.includes("-s");
@@ -1032,7 +1064,9 @@ async function main() {
 
   const result = await execute({ url, maxPages, maxDepth, includeSitemap });
 
-  console.log(`\n✅ Scan complete! Found ${result.summary.high + result.summary.medium + result.summary.low} issues across ${result.pages.length} pages.\n`);
+  console.log(
+    `\n✅ Scan complete! Found ${result.summary.high + result.summary.medium + result.summary.low} issues across ${result.pages.length} pages.\n`,
+  );
 
   if (serve) {
     const html = generateHtmlReport(result);

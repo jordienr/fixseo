@@ -15,7 +15,9 @@ import {
 describe("normalizeUrl", () => {
   it("should normalize a valid URL", () => {
     expect(normalizeUrl("https://example.com")).toBe("https://example.com/");
-    expect(normalizeUrl("https://example.com/path")).toBe("https://example.com/path");
+    expect(normalizeUrl("https://example.com/path")).toBe(
+      "https://example.com/path",
+    );
   });
 
   it("should return the input for invalid URLs", () => {
@@ -26,7 +28,9 @@ describe("normalizeUrl", () => {
 
 describe("sameOrigin", () => {
   it("should return true for same origin URLs", () => {
-    expect(sameOrigin("https://example.com/page1", "https://example.com/page2")).toBe(true);
+    expect(
+      sameOrigin("https://example.com/page1", "https://example.com/page2"),
+    ).toBe(true);
   });
 
   it("should return false for different origin URLs", () => {
@@ -43,7 +47,9 @@ describe("getDepth", () => {
     expect(getDepth("https://example.com", "https://example.com")).toBe(0);
     expect(getDepth("https://example.com/a", "https://example.com")).toBe(1);
     expect(getDepth("https://example.com/a/b", "https://example.com")).toBe(2);
-    expect(getDepth("https://example.com/a/b/c", "https://example.com")).toBe(3);
+    expect(getDepth("https://example.com/a/b/c", "https://example.com")).toBe(
+      3,
+    );
   });
 
   it("should return 0 for invalid URLs", () => {
@@ -53,7 +59,12 @@ describe("getDepth", () => {
 
 describe("createEmptyPageData", () => {
   it("should create empty page data with correct values", () => {
-    const page = createEmptyPageData("https://example.com", 200, "text/html", "max-age=3600");
+    const page = createEmptyPageData(
+      "https://example.com",
+      200,
+      "text/html",
+      "max-age=3600",
+    );
     expect(page.url).toBe("https://example.com");
     expect(page.status).toBe(200);
     expect(page.contentType).toBe("text/html");
@@ -112,13 +123,17 @@ describe("parsePageHtml", () => {
 
   it("should parse HTML even if minimal", () => {
     // JSDOM is forgiving and parses most HTML
-    const page = parsePageHtml("<html><head><title>Test</title></head><body></body></html>", "https://example.com");
+    const page = parsePageHtml(
+      "<html><head><title>Test</title></head><body></body></html>",
+      "https://example.com",
+    );
     expect(page).not.toBeNull();
     expect(page?.title).toBe("Test");
   });
 
   it("should handle missing meta tags gracefully", () => {
-    const minimalHtml = "<!DOCTYPE html><html><head><title>Minimal</title></head><body></body></html>";
+    const minimalHtml =
+      "<!DOCTYPE html><html><head><title>Minimal</title></head><body></body></html>";
     const page = parsePageHtml(minimalHtml, "https://example.com");
     expect(page).not.toBeNull();
     expect(page?.title).toBe("Minimal");
@@ -167,7 +182,9 @@ describe("analyzePage", () => {
       hreflangs: ["en"],
     };
     const issues = analyzePage(page, true);
-    expect(issues.some((i) => i.code === "missing_meta_description")).toBe(true);
+    expect(issues.some((i) => i.code === "missing_meta_description")).toBe(
+      true,
+    );
   });
 
   it("should detect missing H1", () => {
@@ -304,9 +321,24 @@ describe("analyzePage", () => {
 describe("findDuplicateIssues", () => {
   it("should detect duplicate titles", () => {
     const pages = [
-      { url: "https://example.com/page1", title: "Same Title", metaDescription: "Desc 1", canonical: "url1" } as any,
-      { url: "https://example.com/page2", title: "Same Title", metaDescription: "Desc 2", canonical: "url2" } as any,
-      { url: "https://example.com/page3", title: "Unique Title", metaDescription: "Desc 3", canonical: "url3" } as any,
+      {
+        url: "https://example.com/page1",
+        title: "Same Title",
+        metaDescription: "Desc 1",
+        canonical: "url1",
+      } as any,
+      {
+        url: "https://example.com/page2",
+        title: "Same Title",
+        metaDescription: "Desc 2",
+        canonical: "url2",
+      } as any,
+      {
+        url: "https://example.com/page3",
+        title: "Unique Title",
+        metaDescription: "Desc 3",
+        canonical: "url3",
+      } as any,
     ];
     const issues = findDuplicateIssues(pages);
     expect(issues.some((i) => i.code === "duplicate_title")).toBe(true);
@@ -314,17 +346,39 @@ describe("findDuplicateIssues", () => {
 
   it("should detect duplicate meta descriptions", () => {
     const pages = [
-      { url: "https://example.com/page1", title: "Title 1", metaDescription: "Same Desc", canonical: "url1" } as any,
-      { url: "https://example.com/page2", title: "Title 2", metaDescription: "Same Desc", canonical: "url2" } as any,
+      {
+        url: "https://example.com/page1",
+        title: "Title 1",
+        metaDescription: "Same Desc",
+        canonical: "url1",
+      } as any,
+      {
+        url: "https://example.com/page2",
+        title: "Title 2",
+        metaDescription: "Same Desc",
+        canonical: "url2",
+      } as any,
     ];
     const issues = findDuplicateIssues(pages);
-    expect(issues.some((i) => i.code === "duplicate_meta_description")).toBe(true);
+    expect(issues.some((i) => i.code === "duplicate_meta_description")).toBe(
+      true,
+    );
   });
 
   it("should detect duplicate canonical URLs", () => {
     const pages = [
-      { url: "https://example.com/page1", title: "Title 1", metaDescription: "Desc 1", canonical: "https://example.com/canonical" } as any,
-      { url: "https://example.com/page2", title: "Title 2", metaDescription: "Desc 2", canonical: "https://example.com/canonical" } as any,
+      {
+        url: "https://example.com/page1",
+        title: "Title 1",
+        metaDescription: "Desc 1",
+        canonical: "https://example.com/canonical",
+      } as any,
+      {
+        url: "https://example.com/page2",
+        title: "Title 2",
+        metaDescription: "Desc 2",
+        canonical: "https://example.com/canonical",
+      } as any,
     ];
     const issues = findDuplicateIssues(pages);
     expect(issues.some((i) => i.code === "duplicate_canonical")).toBe(true);
@@ -334,8 +388,14 @@ describe("findDuplicateIssues", () => {
 describe("findBrokenCanonicalIssues", () => {
   it("should detect broken canonical URLs", () => {
     const pages = [
-      { url: "https://example.com/page1", canonical: "https://example.com/nonexistent" },
-      { url: "https://example.com/page2", canonical: "https://example.com/page1" },
+      {
+        url: "https://example.com/page1",
+        canonical: "https://example.com/nonexistent",
+      },
+      {
+        url: "https://example.com/page2",
+        canonical: "https://example.com/page1",
+      },
     ] as any;
     const issues = findBrokenCanonicalIssues(pages);
     expect(issues.some((i) => i.code === "broken_canonical")).toBe(true);
@@ -343,8 +403,14 @@ describe("findBrokenCanonicalIssues", () => {
 
   it("should not flag valid canonical URLs", () => {
     const pages = [
-      { url: "https://example.com/page1", canonical: "https://example.com/page1" },
-      { url: "https://example.com/page2", canonical: "https://example.com/page1" },
+      {
+        url: "https://example.com/page1",
+        canonical: "https://example.com/page1",
+      },
+      {
+        url: "https://example.com/page2",
+        canonical: "https://example.com/page1",
+      },
     ] as any;
     const issues = findBrokenCanonicalIssues(pages);
     expect(issues.some((i) => i.code === "broken_canonical")).toBe(false);
@@ -354,9 +420,24 @@ describe("findBrokenCanonicalIssues", () => {
 describe("groupIssues", () => {
   it("should group issues by severity and code", () => {
     const issues = [
-      { severity: "high", code: "missing_title", message: "Missing <title>", url: "https://example.com/1" },
-      { severity: "high", code: "missing_title", message: "Missing <title>", url: "https://example.com/2" },
-      { severity: "medium", code: "missing_h1", message: "Missing H1", url: "https://example.com/1" },
+      {
+        severity: "high",
+        code: "missing_title",
+        message: "Missing <title>",
+        url: "https://example.com/1",
+      },
+      {
+        severity: "high",
+        code: "missing_title",
+        message: "Missing <title>",
+        url: "https://example.com/2",
+      },
+      {
+        severity: "medium",
+        code: "missing_h1",
+        message: "Missing H1",
+        url: "https://example.com/1",
+      },
     ];
     const grouped = groupIssues(issues);
     expect(grouped).toHaveLength(2);
@@ -369,9 +450,24 @@ describe("groupIssues", () => {
 describe("prioritizeIssues", () => {
   it("should sort issues by severity (high, medium, low)", () => {
     const issues = [
-      { severity: "low", code: "low", message: "Low", url: "https://example.com" },
-      { severity: "high", code: "high", message: "High", url: "https://example.com" },
-      { severity: "medium", code: "medium", message: "Medium", url: "https://example.com" },
+      {
+        severity: "low",
+        code: "low",
+        message: "Low",
+        url: "https://example.com",
+      },
+      {
+        severity: "high",
+        code: "high",
+        message: "High",
+        url: "https://example.com",
+      },
+      {
+        severity: "medium",
+        code: "medium",
+        message: "Medium",
+        url: "https://example.com",
+      },
     ];
     const sorted = prioritizeIssues(issues);
     expect(sorted[0].severity).toBe("high");
