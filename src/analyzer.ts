@@ -363,3 +363,45 @@ export function prioritizeIssues(issues: Issue[]): Issue[] {
   const rank = { high: 0, medium: 1, low: 2 } as const;
   return [...issues].sort((a, b) => rank[a.severity] - rank[b.severity]);
 }
+
+export function findSitemapIssues(
+  hasSitemap: boolean,
+  referencedInRobots: boolean,
+  urlsInSitemap: number,
+  urlsTested: number,
+  urlsWithErrors: string[],
+  crawledUrls: string[],
+  startUrl: string,
+): Issue[] {
+  const issues: Issue[] = [];
+
+  if (!hasSitemap) {
+    issues.push({
+      severity: "medium",
+      code: "missing_sitemap",
+      message: "No sitemap.xml found",
+      recommendation: RECOMMENDATIONS.missing_sitemap,
+      url: startUrl,
+    });
+  } else if (!referencedInRobots) {
+    issues.push({
+      severity: "low",
+      code: "sitemap_not_in_robots",
+      message: "Sitemap not referenced in robots.txt",
+      recommendation: RECOMMENDATIONS.sitemap_not_in_robots,
+      url: startUrl,
+    });
+  }
+
+  if (urlsWithErrors.length > 0) {
+    issues.push({
+      severity: "medium",
+      code: "sitemap_urls_error",
+      message: `${urlsWithErrors.length} URLs in sitemap return errors`,
+      recommendation: RECOMMENDATIONS.sitemap_urls_error,
+      url: urlsWithErrors[0],
+    });
+  }
+
+  return issues;
+}

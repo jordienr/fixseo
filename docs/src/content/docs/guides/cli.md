@@ -88,6 +88,8 @@ FixSEO performs the following checks:
 | canonical_wrong_path | Canonical points to different path |
 | soft_404 | 200 status but no content (possible soft 404) |
 | pagination_blocked | Pagination/feed URL blocked by robots.txt |
+| missing_sitemap | No sitemap.xml found |
+| sitemap_urls_error | URLs in sitemap return errors |
 
 ### Low Priority
 | Check | Description |
@@ -101,6 +103,7 @@ FixSEO performs the following checks:
 | Missing canonical | No canonical URL specified |
 | Missing hreflang | No hreflang tags for internationalization |
 | Redirect | Page returns 3xx redirect status |
+| sitemap_not_in_robots | Sitemap not referenced in robots.txt |
 
 ### Errors
 | Check | Description |

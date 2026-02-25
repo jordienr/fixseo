@@ -49,6 +49,10 @@ export const RECOMMENDATIONS: Record<string, string> = {
   soft_404: "Either return 404 for missing content or improve the page",
   robots_blocked: "Update robots.txt to allow crawling of important pages",
   pagination_blocked: "Allow crawling of pagination URLs in robots.txt",
+  missing_sitemap: "Create a sitemap.xml file and submit it to Google Search Console",
+  sitemap_not_in_robots: "Add Sitemap: directive to robots.txt",
+  sitemap_urls_error: "Fix or remove broken URLs from sitemap",
+  orphan_pages: "Add internal links to these pages or remove from sitemap",
 };
 
 export type PageData = {
@@ -90,6 +94,14 @@ export type ScanResult = {
   groupedIssues: (Issue & { count: number; urls: string[] })[];
   topIssues: Issue[];
   pages: PageData[];
+  sitemap?: {
+    url?: string;
+    urlsInSitemap: number;
+    urlsTested: number;
+    urlsWithErrors: number;
+    referencedInRobots: boolean;
+    orphanUrls: string[];
+  };
 };
 
 export type Args = {
