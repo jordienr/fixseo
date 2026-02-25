@@ -78,11 +78,12 @@ export default async function execute(args: Args): Promise<ScanResult> {
       },
     ];
 
+    let robots: ReturnType<typeof robotsParser> | null = null;
     try {
       const robotsRes = await fetch(`${origin}/robots.txt`);
       if (robotsRes.ok) {
         const robotsTxt = await robotsRes.text();
-        robotsParser(`${origin}/robots.txt`, robotsTxt);
+        robots = robotsParser(`${origin}/robots.txt`, robotsTxt);
       }
     } catch {
       // Silently fail - robots.txt is optional
@@ -146,7 +147,9 @@ export default async function execute(args: Args): Promise<ScanResult> {
       const status = res.status;
       const contentType = res.headers.get("content-type") ?? "";
       const cacheControl = res.headers.get("cache-control") ?? null;
+      const xRobotsTag = res.headers.get("x-robots-tag") ?? null;
       const isHtml = contentType.includes("text/html");
+      const robotsBlocked = robots ? !robots.isAllowed(url, "Googlebot") : false;
 
       if (status >= 400) {
         issues.push({
@@ -156,18 +159,18 @@ export default async function execute(args: Args): Promise<ScanResult> {
           url,
           recommendation: RECOMMENDATIONS.http_error,
         });
-        pages.push(createEmptyPageData(url, status, contentType, cacheControl));
+        pages.push(createEmptyPageData(url, status, contentType, cacheControl, xRobotsTag, robotsBlocked));
         continue;
       }
 
       if (!isHtml) {
-        pages.push(createEmptyPageData(url, status, contentType, cacheControl));
+        pages.push(createEmptyPageData(url, status, contentType, cacheControl, xRobotsTag, robotsBlocked));
         continue;
       }
 
       const html = await res.text();
       if (!html || html.length < 10) {
-        pages.push(createEmptyPageData(url, status, contentType, cacheControl));
+        pages.push(createEmptyPageData(url, status, contentType, cacheControl, xRobotsTag, robotsBlocked));
         continue;
       }
 
@@ -179,6 +182,8 @@ export default async function execute(args: Args): Promise<ScanResult> {
       page.status = status;
       page.contentType = contentType;
       page.cacheControl = cacheControl;
+      page.xRobotsTag = xRobotsTag;
+      page.robotsBlocked = robotsBlocked;
 
       const pageIssues = analyzePage(page, isHttps);
       issues.push(...pageIssues);

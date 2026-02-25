@@ -70,6 +70,10 @@ FixSEO performs the following checks:
 |-------|-------------|
 | Missing `<title>` | Page has no `<title>` tag in `<head>` |
 | noindex | Page is marked with robots noindex |
+| noindex_header | Page has X-Robots-Tag: noindex header |
+| robots_blocked | Page is blocked by robots.txt |
+| non_html_content | Content-Type is not text/html |
+| canonical_non_200 | Canonical URL returns error/redirect |
 
 ### Medium Priority
 | Check | Description |
@@ -80,6 +84,10 @@ FixSEO performs the following checks:
 | Duplicate title | Same title used on multiple pages |
 | Duplicate canonical | Same canonical URL used on multiple pages |
 | Broken canonical | Canonical URL points to non-existent page |
+| canonical_wrong_host | Canonical points to different host/protocol |
+| canonical_wrong_path | Canonical points to different path |
+| soft_404 | 200 status but no content (possible soft 404) |
+| pagination_blocked | Pagination/feed URL blocked by robots.txt |
 
 ### Low Priority
 | Check | Description |

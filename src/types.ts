@@ -32,6 +32,7 @@ export const RECOMMENDATIONS: Record<string, string> = {
   missing_hreflang:
     "Add hreflang tags for international SEO if you have multiple language versions",
   noindex: "Remove 'noindex' from robots meta if you want this page indexed",
+  noindex_header: "Remove 'noindex' from X-Robots-Tag header if you want this page indexed",
   http_error: "Fix the broken link or server error",
   fetch_timeout: "Optimize server response time or check for DDoS protection",
   fetch_failed: "Verify the URL is accessible",
@@ -41,6 +42,13 @@ export const RECOMMENDATIONS: Record<string, string> = {
   broken_canonical: "Update the canonical URL to point to an existing page",
   redirect: "Consider using 301 redirect or removing unnecessary redirects",
   http_not_https: "Implement HTTP to HTTPS redirect at server level",
+  canonical_wrong_host: "Update canonical URL to match the current host/protocol",
+  canonical_wrong_path: "Update canonical URL to match the current path",
+  canonical_non_200: "Update canonical URL to point to a working page",
+  non_html_content: "Ensure pages are served with Content-Type: text/html",
+  soft_404: "Either return 404 for missing content or improve the page",
+  robots_blocked: "Update robots.txt to allow crawling of important pages",
+  pagination_blocked: "Allow crawling of pagination URLs in robots.txt",
 };
 
 export type PageData = {
@@ -52,6 +60,7 @@ export type PageData = {
   canonical: string | null;
   h1: string | null;
   robotsMeta: string | null;
+  xRobotsTag: string | null;
   ogTitle: string | null;
   ogDescription: string | null;
   ogImage: string | null;
@@ -65,6 +74,9 @@ export type PageData = {
   h2Count: number;
   cacheControl: string | null;
   hreflangs: string[] | null;
+  robotsBlocked: boolean;
+  isPagination: boolean;
+  isFeed: boolean;
 };
 
 export type ScanResult = {

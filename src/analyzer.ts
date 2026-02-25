@@ -11,6 +11,8 @@ export function analyzePage(page: PageData, isHttps: boolean): Issue[] {
     h1,
     canonical,
     robotsMeta,
+    xRobotsTag,
+    contentType,
     jsonLd,
     imagesTotal,
     imagesWithAlt,
@@ -20,6 +22,9 @@ export function analyzePage(page: PageData, isHttps: boolean): Issue[] {
     ogDescription,
     ogImage,
     twitterCard,
+    robotsBlocked,
+    isPagination,
+    isFeed,
   } = page;
 
   if (!title)
@@ -110,6 +115,29 @@ export function analyzePage(page: PageData, isHttps: boolean): Issue[] {
       url,
       recommendation: RECOMMENDATIONS.missing_canonical,
     });
+  if (canonical) {
+    try {
+      const currentUrl = new URL(url);
+      const canonicalUrl = new URL(canonical);
+      if (canonicalUrl.origin !== currentUrl.origin) {
+        issues.push({
+          severity: "high",
+          code: "canonical_wrong_host",
+          message: `Canonical points to different host: ${canonicalUrl.origin}`,
+          url,
+          recommendation: RECOMMENDATIONS.canonical_wrong_host,
+        });
+      } else if (canonicalUrl.pathname !== currentUrl.pathname) {
+        issues.push({
+          severity: "medium",
+          code: "canonical_wrong_path",
+          message: `Canonical points to different path`,
+          url,
+          recommendation: RECOMMENDATIONS.canonical_wrong_path,
+        });
+      }
+    } catch {}
+  }
   if (!hreflangs || hreflangs.length === 0)
     issues.push({
       severity: "low",
@@ -125,6 +153,46 @@ export function analyzePage(page: PageData, isHttps: boolean): Issue[] {
       message: "Page is marked noindex",
       url,
       recommendation: RECOMMENDATIONS.noindex,
+    });
+  if (xRobotsTag?.toLowerCase().includes("noindex"))
+    issues.push({
+      severity: "high",
+      code: "noindex_header",
+      message: "Page has X-Robots-Tag: noindex",
+      url,
+      recommendation: RECOMMENDATIONS.noindex_header,
+    });
+  if (!contentType?.includes("text/html"))
+    issues.push({
+      severity: "high",
+      code: "non_html_content",
+      message: `Non-HTML content-type: ${contentType}`,
+      url,
+      recommendation: RECOMMENDATIONS.non_html_content,
+    });
+  if (robotsBlocked)
+    issues.push({
+      severity: "high",
+      code: "robots_blocked",
+      message: "Page blocked by robots.txt",
+      url,
+      recommendation: RECOMMENDATIONS.robots_blocked,
+    });
+  if (robotsBlocked && (isPagination || isFeed))
+    issues.push({
+      severity: "medium",
+      code: "pagination_blocked",
+      message: isPagination ? "Pagination URL blocked by robots.txt" : "Feed URL blocked by robots.txt",
+      url,
+      recommendation: RECOMMENDATIONS.pagination_blocked,
+    });
+  if (status === 200 && !title && !h1 && !metaDescription)
+    issues.push({
+      severity: "medium",
+      code: "soft_404",
+      message: "Possible soft 404 (200 status but no content)",
+      url,
+      recommendation: RECOMMENDATIONS.soft_404,
     });
   if (status >= 300 && status < 400)
     issues.push({
@@ -209,17 +277,55 @@ export function findDuplicateIssues(pages: PageData[]): Issue[] {
 export function findBrokenCanonicalIssues(pages: PageData[]): Issue[] {
   const issues: Issue[] = [];
   const pageUrls = new Set(pages.map((p) => p.url));
+  const normalizedPageUrls = new Set(pages.map((p) => normalizeUrlKey(p.url)));
+  const pageUrlsWithStatus = new Map(pages.filter(p => p.status).map((p) => [p.url, p.status]));
+  const normalizedPageUrlsWithStatus = new Map(pages.filter(p => p.status).map((p) => [normalizeUrlKey(p.url), p.status]));
+
+  const hasStatusData = pageUrlsWithStatus.size > 0;
 
   for (const page of pages) {
     if (page.canonical && page.canonical !== page.url) {
-      if (!pageUrls.has(page.canonical)) {
-        issues.push({
-          severity: "medium",
-          code: "broken_canonical",
-          message: "Canonical URL points to non-existent page",
-          url: page.url,
-          recommendation: RECOMMENDATIONS.broken_canonical,
-        });
+      const canonicalStatus = pageUrlsWithStatus.get(page.canonical) ?? normalizedPageUrlsWithStatus.get(normalizeUrlKey(page.canonical));
+      const canonicalExists = pageUrls.has(page.canonical) || normalizedPageUrls.has(normalizeUrlKey(page.canonical));
+      
+      if (hasStatusData) {
+        if (canonicalStatus !== undefined) {
+          if (canonicalStatus >= 400) {
+            issues.push({
+              severity: "high",
+              code: "canonical_non_200",
+              message: `Canonical URL returns HTTP ${canonicalStatus}`,
+              url: page.url,
+              recommendation: RECOMMENDATIONS.canonical_non_200,
+            });
+          } else if (canonicalStatus >= 300 && canonicalStatus < 400) {
+            issues.push({
+              severity: "medium",
+              code: "canonical_non_200",
+              message: `Canonical URL redirects (HTTP ${canonicalStatus})`,
+              url: page.url,
+              recommendation: RECOMMENDATIONS.canonical_non_200,
+            });
+          }
+        } else if (!canonicalExists) {
+          issues.push({
+            severity: "medium",
+            code: "broken_canonical",
+            message: "Canonical URL points to non-existent page",
+            url: page.url,
+            recommendation: RECOMMENDATIONS.broken_canonical,
+          });
+        }
+      } else {
+        if (!canonicalExists) {
+          issues.push({
+            severity: "medium",
+            code: "broken_canonical",
+            message: "Canonical URL points to non-existent page",
+            url: page.url,
+            recommendation: RECOMMENDATIONS.broken_canonical,
+          });
+        }
       }
     }
   }

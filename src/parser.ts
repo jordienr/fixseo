@@ -6,7 +6,12 @@ export function createEmptyPageData(
   status: number,
   contentType: string,
   cacheControl: string | null,
+  xRobotsTag: string | null,
+  robotsBlocked: boolean,
 ): PageData {
+  const isPagination = /\/page[\/=]\d+|\/paged?\/\d+|\/\d+\/?$/i.test(url);
+  const isFeed = /\/feed\/?$|\/rss\/?$|\/atom\/?$|\/sitemap\.xml$/i.test(url);
+  
   return {
     url,
     status,
@@ -16,6 +21,7 @@ export function createEmptyPageData(
     canonical: null,
     h1: null,
     robotsMeta: null,
+    xRobotsTag,
     ogTitle: null,
     ogDescription: null,
     ogImage: null,
@@ -29,6 +35,9 @@ export function createEmptyPageData(
     h2Count: 0,
     cacheControl,
     hreflangs: null,
+    robotsBlocked,
+    isPagination,
+    isFeed,
   };
 }
 
@@ -104,6 +113,7 @@ function extractPageData(doc: Document, url: string): PageData {
     canonical,
     h1,
     robotsMeta,
+    xRobotsTag: null,
     ogTitle,
     ogDescription,
     ogImage,
@@ -117,5 +127,8 @@ function extractPageData(doc: Document, url: string): PageData {
     h2Count,
     cacheControl: null,
     hreflangs: hreflangs.length ? hreflangs : null,
+    robotsBlocked: false,
+    isPagination: /\/page[\/=]\d+|\/paged?\/\d+|\/\d+\/?$/i.test(url),
+    isFeed: /\/feed\/?$|\/rss\/?$|\/atom\/?$|\/sitemap\.xml$/i.test(url),
   };
 }
