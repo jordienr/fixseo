@@ -6,7 +6,7 @@ export { default as execute, fetchSitemapUrls } from "./crawler";
 export * from "./reports";
 
 import execute from "./crawler";
-import { generateTerminalReport, generateMarkdownReport, generateHtmlReport, serveReactReport } from "./reports";
+import { generateTerminalReport, generateMarkdownReport, generateJsonReport, serveReactReport } from "./reports";
 
 export async function installOpenCodeTool() {
   const fs = await import("fs/promises");
@@ -59,13 +59,12 @@ async function main() {
     return;
   }
 
-  const outputHtml = args.includes("--html") || args.includes("-h");
   const outputMarkdown = args.includes("--markdown") || args.includes("-m");
   const outputJson = args.includes("--json") || args.includes("-j");
   const serve = args.includes("--serve") || args.includes("-s");
   
   let outputPath: string | undefined;
-  let outputFormat: "terminal" | "json" | "markdown" | "html" = "terminal";
+  let outputFormat: "terminal" | "json" | "markdown" = "terminal";
   
   const outputArg = args.find((a) => a.startsWith("--output="));
   if (outputArg) {
@@ -74,7 +73,7 @@ async function main() {
     const formatArg = args.find((a) => a.startsWith("--format="));
     if (formatArg) {
       const format = formatArg.split("=")[1];
-      if (format === "json" || format === "markdown" || format === "html") {
+      if (format === "json" || format === "markdown") {
         outputFormat = format;
       }
     }
@@ -105,10 +104,9 @@ async function main() {
     console.error("Options:");
     console.error("  --json, -j         Output JSON");
     console.error("  --markdown, -m     Output Markdown (for copy/paste)");
-    console.error("  --html, -h         Output HTML report");
-    console.error("  --serve, -s        Serve HTML report locally");
+    console.error("  --serve, -s        Serve interactive HTML report locally");
     console.error("  --output=<path>    Save output to file");
-    console.error("  --format=<type>    Output format: json|markdown|html (used with --output)");
+    console.error("  --format=<type>    Output format: json|markdown (used with --output)");
     console.error("  --max-pages=<n>    Max pages to crawl (default: 25)");
     console.error("  --max-depth=<n>    Max crawl depth (default: 10)");
     console.error("  --no-sitemap       Disable sitemap crawling");
@@ -136,8 +134,6 @@ async function main() {
       content = JSON.stringify(result, null, 2);
     } else if (outputFormat === "markdown" || outputMarkdown) {
       content = generateMarkdownReport(result);
-    } else if (outputFormat === "html" || outputHtml) {
-      content = generateHtmlReport(result);
     } else {
       content = generateTerminalReport(result);
     }
@@ -168,11 +164,6 @@ async function main() {
 
   if (outputMarkdown) {
     console.log(generateMarkdownReport(result));
-    return;
-  }
-
-  if (outputHtml) {
-    console.log(generateHtmlReport(result));
     return;
   }
 
