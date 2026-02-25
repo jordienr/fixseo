@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+:root {
+  --sl-font: "Geist Mono", monospace;
+  --sl-font-mono: "Geist Mono", monospace;
+}
+
+body {
+  font-family: "Geist Mono", monospace;
+}

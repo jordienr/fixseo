@@ -1,6 +1,6 @@
 {
   "name": "fixseo",
-  "version": "0.2.2",
+  "version": "0.3.2",
   "description": "SEO analysis CLI and OpenCode tool - scan websites for SEO issues",
   "type": "module",
   "main": "./src/index.ts",

@@ -9,12 +9,12 @@ export default tool({
     includeSitemap: tool.schema.boolean().optional().describe("Use sitemap to discover pages (default: true)"),
   },
   async execute(args, context) {
-    const cmd = ["npx", "fixseo", args.url, "--markdown"]
+    const cmd = ["npx", "fixseo", args.url, "--json"]
     if (args.maxPages) cmd.push(`--max-pages=${args.maxPages}`)
     if (args.maxDepth) cmd.push(`--max-depth=${args.maxDepth}`)
     if (args.includeSitemap === false) cmd.push("--no-sitemap")
 
     const result = await Bun.$`${cmd}`.text()
-    return result
+    return JSON.parse(result)
   },
 })

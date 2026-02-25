@@ -1,0 +1,65 @@
+---
+import "../styles/global.css";
+import { Icon } from "../ui/icon";
+import { FixseoAscii } from "../ui/fixseo-ascii";
+
+const cliCommand = "npx fixseo https://mywebsite.com";
+const opencodeCommand = "npx fixseo opencode";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FIXSEO.DEV - CLI & OpenCode Tool for SEO Analysis</title>
+    <meta
+      name="description"
+      content="A command-line SEO analysis tool that crawls websites and generates structured reports. Like Ahrefs for your CLI - perfect for agents to analyze and fix SEO issues."
+    />
+    <meta
+      property="og:title"
+      content="FIXSEO.DEV - CLI & OpenCode Tool for SEO Analysis"
+    />
+    <meta
+      property="og:description"
+      content="A command-line SEO analysis tool that crawls websites and generates structured reports. Like Ahrefs for your CLI - perfect for agents to analyze and fix SEO issues."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://fixseo.dev" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href="https://fixseo.dev" />
+  </head>
+  <body class="bg-black text-white font-mono font-light">
+    <div class="max-w-3xl w-full mx-auto py-16 px-4 flex flex-col">
+      <h1 class="font-medium text-xl">
+        <span> FIXSEO</span>
+        <span class="text-gray-400 tracking-tight"
+          >Turn your agent into an SEO expert</span
+        >
+      </h1>
+
+      <hr class="my-4 opacity-20" />
+
+      <div class="mt-8 space-y-2">
+        <div
+          class="bg-white/10 hover:bg-white/20 flex items-center gap-2 border-white/40 border-2"
+          onclick="copyCLI()"
+        >
+          <span>npx fixseo http://localhost:3000</span>
+          <button class="text-gray-400">
+            <Icon name="clipboard" />
+          </button>
+        </div>
+        <button
+          class="py-3 px-4 bg-white/10 hover:bg-white/20 flex items-center gap-2 border-white/40 border-2"
+          onclick="copyOpencode()"
+        >
+          npx fixseo opencode
+        </button>
+      </div>
+
+      <a href="/getting-started" class="docs-link">View Docs →</a>
+    </div>
+  </body>
+</html>
