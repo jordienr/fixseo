@@ -4,6 +4,7 @@ import { existsSync, readFileSync } from 'node:fs'
 
 let reportData: unknown = null
 const distPath = join(dirname(fileURLToPath(import.meta.url)), 'dist')
+const demoDataPath = join(dirname(fileURLToPath(import.meta.url)), 'demo.json')
 
 function getContentType(path: string): string {
   if (path.endsWith('.html')) return 'text/html'
@@ -16,6 +17,8 @@ function getContentType(path: string): string {
 }
 
 export async function startServer(port = 5354): Promise<{ url: string; setReportData: (data: unknown) => void }> {
+  console.log(`\n🚀 Server running at http://localhost:${port}\n`);
+  
   const server = Bun.serve({
     port,
     async fetch(req) {
@@ -28,7 +31,13 @@ export async function startServer(port = 5354): Promise<{ url: string; setReport
               headers: { 'Content-Type': 'application/json' }
             })
           }
-          return new Response(JSON.stringify({ error: 'No report data' }), { 
+          if (existsSync(demoDataPath)) {
+            const demo = JSON.parse(readFileSync(demoDataPath, 'utf-8'))
+            return new Response(JSON.stringify(demo), {
+              headers: { 'Content-Type': 'application/json' }
+            })
+          }
+          return new Response(JSON.stringify({ error: 'No report data. Run fixseo with --serve to generate a report, or add demo.json to web/ folder.' }), { 
             status: 404,
             headers: { 'Content-Type': 'application/json' }
           })
@@ -69,3 +78,5 @@ export async function startServer(port = 5354): Promise<{ url: string; setReport
     setReportData: (data: unknown) => { reportData = data }
   }
 }
+
+startServer();

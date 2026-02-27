@@ -181,6 +181,204 @@ describe("analyzePage", () => {
     const issues = analyzePage(page, true);
     expect(issues.some((i) => i.code === "http_not_https")).toBe(true);
   });
+
+  it("should detect title too short", () => {
+    const page: any = {
+      url: "https://example.com",
+      status: 200,
+      title: "Short",
+      metaDescription: "Description",
+      h1: "Heading",
+      canonical: "https://example.com",
+      ogTitle: "OG",
+      ogDescription: "OG Desc",
+      ogImage: "img.jpg",
+      twitterCard: "summary",
+      jsonLd: ["{}"],
+      imagesTotal: 0,
+      imagesWithAlt: 0,
+      hreflangs: ["en"],
+      lang: "en",
+      appleTouchIcon: "icon.png",
+      wordCount: 500,
+    };
+    const issues = analyzePage(page, true);
+    expect(issues.some((i) => i.code === "title_too_short")).toBe(true);
+  });
+
+  it("should detect title too long", () => {
+    const page: any = {
+      url: "https://example.com",
+      status: 200,
+      title: "This is a very long title that exceeds the recommended limit of 60 characters for SEO",
+      metaDescription: "Description",
+      h1: "Heading",
+      canonical: "https://example.com",
+      ogTitle: "OG",
+      ogDescription: "OG Desc",
+      ogImage: "img.jpg",
+      twitterCard: "summary",
+      jsonLd: ["{}"],
+      imagesTotal: 0,
+      imagesWithAlt: 0,
+      hreflangs: ["en"],
+      lang: "en",
+      appleTouchIcon: "icon.png",
+      wordCount: 500,
+    };
+    const issues = analyzePage(page, true);
+    expect(issues.some((i) => i.code === "title_too_long")).toBe(true);
+  });
+
+  it("should detect description too short", () => {
+    const page: any = {
+      url: "https://example.com",
+      status: 200,
+      title: "Title",
+      metaDescription: "Short description",
+      h1: "Heading",
+      canonical: "https://example.com",
+      ogTitle: "OG",
+      ogDescription: "OG Desc",
+      ogImage: "img.jpg",
+      twitterCard: "summary",
+      jsonLd: ["{}"],
+      imagesTotal: 0,
+      imagesWithAlt: 0,
+      hreflangs: ["en"],
+      lang: "en",
+      appleTouchIcon: "icon.png",
+      wordCount: 500,
+    };
+    const issues = analyzePage(page, true);
+    expect(issues.some((i) => i.code === "description_too_short")).toBe(true);
+  });
+
+  it("should detect description too long", () => {
+    const page: any = {
+      url: "https://example.com",
+      status: 200,
+      title: "Title",
+      metaDescription: "This is a very long meta description that exceeds the recommended limit of 160 characters which can lead to truncation in search engine results pages and reduced click-through rates from users",
+      h1: "Heading",
+      canonical: "https://example.com",
+      ogTitle: "OG",
+      ogDescription: "OG Desc",
+      ogImage: "img.jpg",
+      twitterCard: "summary",
+      jsonLd: ["{}"],
+      imagesTotal: 0,
+      imagesWithAlt: 0,
+      hreflangs: ["en"],
+      lang: "en",
+      appleTouchIcon: "icon.png",
+      wordCount: 500,
+    };
+    const issues = analyzePage(page, true);
+    expect(issues.some((i) => i.code === "description_too_long")).toBe(true);
+  });
+
+  it("should detect content too short", () => {
+    const page: any = {
+      url: "https://example.com",
+      status: 200,
+      title: "Title",
+      metaDescription: "Description",
+      h1: "Heading",
+      canonical: "https://example.com",
+      ogTitle: "OG",
+      ogDescription: "OG Desc",
+      ogImage: "img.jpg",
+      twitterCard: "summary",
+      jsonLd: ["{}"],
+      imagesTotal: 0,
+      imagesWithAlt: 0,
+      hreflangs: ["en"],
+      lang: "en",
+      appleTouchIcon: "icon.png",
+      wordCount: 150,
+    };
+    const issues = analyzePage(page, true);
+    expect(issues.some((i) => i.code === "content_too_short")).toBe(true);
+  });
+
+  it("should detect missing lang attribute", () => {
+    const page: any = {
+      url: "https://example.com",
+      status: 200,
+      title: "Title",
+      metaDescription: "Description",
+      h1: "Heading",
+      canonical: "https://example.com",
+      ogTitle: "OG",
+      ogDescription: "OG Desc",
+      ogImage: "img.jpg",
+      twitterCard: "summary",
+      jsonLd: ["{}"],
+      imagesTotal: 0,
+      imagesWithAlt: 0,
+      hreflangs: ["en"],
+      lang: null,
+      appleTouchIcon: "icon.png",
+      wordCount: 500,
+    };
+    const issues = analyzePage(page, true);
+    expect(issues.some((i) => i.code === "missing_lang")).toBe(true);
+  });
+
+  it("should detect missing apple touch icon", () => {
+    const page: any = {
+      url: "https://example.com",
+      status: 200,
+      title: "Title",
+      metaDescription: "Description",
+      h1: "Heading",
+      canonical: "https://example.com",
+      ogTitle: "OG",
+      ogDescription: "OG Desc",
+      ogImage: "img.jpg",
+      twitterCard: "summary",
+      jsonLd: ["{}"],
+      imagesTotal: 0,
+      imagesWithAlt: 0,
+      hreflangs: ["en"],
+      lang: "en",
+      appleTouchIcon: null,
+      wordCount: 500,
+    };
+    const issues = analyzePage(page, true);
+    expect(issues.some((i) => i.code === "missing_apple_touch_icon")).toBe(true);
+  });
+
+  it("should not flag good content length", () => {
+    const page: any = {
+      url: "https://example.com",
+      status: 200,
+      title: "Best SEO Services for Your Business Success Online",
+      metaDescription: "This is a meta description that is just right at around 155 characters for optimal SEO performance in search results to attract more visitors to your site.",
+      h1: "Heading",
+      canonical: "https://example.com",
+      ogTitle: "OG",
+      ogDescription: "OG Desc",
+      ogImage: "img.jpg",
+      twitterCard: "summary",
+      jsonLd: ["{}"],
+      imagesTotal: 0,
+      imagesWithAlt: 0,
+      hreflangs: ["en"],
+      lang: "en",
+      appleTouchIcon: "icon.png",
+      wordCount: 400,
+    };
+    const issues = analyzePage(page, true);
+    expect(issues.some((i) => i.code === "title_too_short")).toBe(false);
+    expect(issues.some((i) => i.code === "title_too_long")).toBe(false);
+    expect(issues.some((i) => i.code === "description_too_short")).toBe(false);
+    expect(issues.some((i) => i.code === "description_too_long")).toBe(false);
+    expect(issues.some((i) => i.code === "content_too_short")).toBe(false);
+    expect(issues.some((i) => i.code === "missing_lang")).toBe(false);
+    expect(issues.some((i) => i.code === "missing_apple_touch_icon")).toBe(false);
+  });
 });
 
 describe("findDuplicateIssues", () => {

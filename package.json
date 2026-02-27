@@ -1,6 +1,6 @@
 {
   "name": "fixseo",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "SEO analysis CLI and OpenCode tool - scan websites for SEO issues",
   "type": "module",
   "main": "./src/index.ts",
@@ -12,6 +12,8 @@
     "fixseo": "bin/main"
   },
   "scripts": {
+    "dev": "cd web && npm run dev",
+    "dev:serve": "bun run web/server.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "coverage": "vitest run --coverage",

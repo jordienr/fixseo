@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import Report from './components/Report'
+import demoData from '../demo.json'
 
 export type ScanResult = {
   scanned: {
@@ -23,11 +24,29 @@ export type ScanResult = {
   pages: {
     url: string
     status: number
-    title?: string
-    metaDescription?: string
-    h1?: string
-    ogTitle?: string
-    jsonLd?: boolean
+    contentType?: string
+    title: string | null
+    metaDescription: string | null
+    canonical: string | null
+    h1: string | null
+    robotsMeta: string | null
+    xRobotsTag: string | null
+    ogTitle: string | null
+    ogDescription: string | null
+    ogImage: string | null
+    twitterCard: string | null
+    twitterTitle: string | null
+    twitterDescription: string | null
+    twitterImage: string | null
+    jsonLd: string[] | null
+    imagesTotal: number
+    imagesWithAlt: number
+    h2Count: number
+    cacheControl: string | null
+    hreflangs: string[] | null
+    robotsBlocked: boolean
+    isPagination: boolean
+    isFeed: boolean
   }[]
 }
 
@@ -37,6 +56,12 @@ function App() {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
+    if (import.meta.env.DEV) {
+      setData(demoData as ScanResult)
+      setLoading(false)
+      return
+    }
+    
     fetch('/api/report')
       .then(res => {
         if (!res.ok) throw new Error('No report data')

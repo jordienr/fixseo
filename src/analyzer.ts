@@ -25,6 +25,9 @@ export function analyzePage(page: PageData, isHttps: boolean): Issue[] {
     robotsBlocked,
     isPagination,
     isFeed,
+    lang,
+    appleTouchIcon,
+    wordCount,
   } = page;
 
   if (!title)
@@ -212,6 +215,71 @@ export function analyzePage(page: PageData, isHttps: boolean): Issue[] {
       recommendation: RECOMMENDATIONS.http_not_https,
     });
   }
+
+  if (title) {
+    if (title.length < 50)
+      issues.push({
+        severity: "low",
+        code: "title_too_short",
+        message: `Title too short (${title.length} chars). Recommended: 50-60 characters`,
+        url,
+        recommendation: RECOMMENDATIONS.title_too_short,
+      });
+    if (title.length > 60)
+      issues.push({
+        severity: "medium",
+        code: "title_too_long",
+        message: `Title too long (${title.length} chars). Recommended: under 60 characters`,
+        url,
+        recommendation: RECOMMENDATIONS.title_too_long,
+      });
+  }
+
+  if (metaDescription) {
+    if (metaDescription.length < 150)
+      issues.push({
+        severity: "low",
+        code: "description_too_short",
+        message: `Meta description too short (${metaDescription.length} chars). Recommended: 150-160 characters`,
+        url,
+        recommendation: RECOMMENDATIONS.description_too_short,
+      });
+    if (metaDescription.length > 160)
+      issues.push({
+        severity: "medium",
+        code: "description_too_long",
+        message: `Meta description too long (${metaDescription.length} chars). Recommended: under 160 characters`,
+        url,
+        recommendation: RECOMMENDATIONS.description_too_long,
+      });
+  }
+
+  if (wordCount > 0 && wordCount < 300)
+    issues.push({
+      severity: "medium",
+      code: "content_too_short",
+      message: `Content too short (${wordCount} words). Recommended: 300-500 words`,
+      url,
+      recommendation: RECOMMENDATIONS.content_too_short,
+    });
+
+  if (!lang)
+    issues.push({
+      severity: "medium",
+      code: "missing_lang",
+      message: "Missing lang attribute on <html>",
+      url,
+      recommendation: RECOMMENDATIONS.missing_lang,
+    });
+
+  if (!appleTouchIcon)
+    issues.push({
+      severity: "low",
+      code: "missing_apple_touch_icon",
+      message: "Missing Apple touch icon",
+      url,
+      recommendation: RECOMMENDATIONS.missing_apple_touch_icon,
+    });
 
   return issues;
 }

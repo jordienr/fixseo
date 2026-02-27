@@ -83,4 +83,56 @@ describe("parsePageHtml", () => {
     expect(page?.metaDescription).toBeNull();
     expect(page?.canonical).toBeNull();
   });
+
+  it("should parse lang attribute", () => {
+    const html =
+      "<!DOCTYPE html><html lang='en'><head><title>Test</title></head><body>Content</body></html>";
+    const page = parsePageHtml(html, "https://example.com");
+    expect(page?.lang).toBe("en");
+  });
+
+  it("should parse apple-touch-icon", () => {
+    const html = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Test</title>
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+      </head>
+      <body></body>
+      </html>
+    `;
+    const page = parsePageHtml(html, "https://example.com");
+    expect(page?.appleTouchIcon).toBe("/apple-touch-icon.png");
+  });
+
+  it("should parse apple-touch-icon-precomposed", () => {
+    const html = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Test</title>
+        <link rel="apple-touch-icon-precomposed" href="/icon.png">
+      </head>
+      <body></body>
+      </html>
+    `;
+    const page = parsePageHtml(html, "https://example.com");
+    expect(page?.appleTouchIcon).toBe("/icon.png");
+  });
+
+  it("should count words in body", () => {
+    const html = `
+      <!DOCTYPE html>
+      <html>
+      <head><title>Test</title></head>
+      <body>
+        This is a test page with some content that should be counted as words.
+        It has multiple sentences and we need to verify word counting works correctly.
+      </body>
+      </html>
+    `;
+    const page = parsePageHtml(html, "https://example.com");
+    expect(page?.wordCount).toBeGreaterThan(10);
+  });
 });

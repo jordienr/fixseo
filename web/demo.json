@@ -1,0 +1,267 @@
+{
+  "scanned": {
+    "startUrl": "https://example.com",
+    "pagesScanned": 5,
+    "maxPages": 25,
+    "scannedAt": "2026-02-25T12:00:00.000Z"
+  },
+  "summary": {
+    "high": 3,
+    "medium": 4,
+    "low": 8
+  },
+  "groupedIssues": [
+    {
+      "severity": "high",
+      "code": "missing_title",
+      "message": "Missing <title>",
+      "count": 2,
+      "urls": [
+        "https://example.com/about",
+        "https://example.com/contact"
+      ],
+      "recommendation": "Add a descriptive <title> tag in the <head> section"
+    },
+    {
+      "severity": "high",
+      "code": "noindex",
+      "message": "Page is marked noindex",
+      "count": 1,
+      "urls": [
+        "https://example.com/admin"
+      ],
+      "recommendation": "Remove 'noindex' from robots meta if you want this page indexed"
+    },
+    {
+      "severity": "high",
+      "code": "robots_blocked",
+      "message": "Page blocked by robots.txt",
+      "count": 1,
+      "urls": [
+        "https://example.com/private"
+      ],
+      "recommendation": "Update robots.txt to allow crawling of important pages"
+    },
+    {
+      "severity": "medium",
+      "code": "missing_meta_description",
+      "message": "Missing meta description",
+      "count": 3,
+      "urls": [
+        "https://example.com/",
+        "https://example.com/about",
+        "https://example.com/blog"
+      ],
+      "recommendation": "Add a meta description (150-160 chars) that summarizes the page content"
+    },
+    {
+      "severity": "medium",
+      "code": "missing_h1",
+      "message": "Missing H1",
+      "count": 2,
+      "urls": [
+        "https://example.com/contact",
+        "https://example.com/pricing"
+      ],
+      "recommendation": "Add an H1 heading that includes your main keyword"
+    },
+    {
+      "severity": "medium",
+      "code": "missing_sitemap",
+      "message": "No sitemap.xml found",
+      "count": 1,
+      "urls": [],
+      "recommendation": "Create a sitemap.xml file and submit it to Google Search Console"
+    },
+    {
+      "severity": "medium",
+      "code": "soft_404",
+      "message": "Possible soft 404 (200 status but no content)",
+      "count": 1,
+      "urls": [
+        "https://example.com/nonexistent"
+      ],
+      "recommendation": "Either return 404 for missing content or improve the page"
+    },
+    {
+      "severity": "low",
+      "code": "missing_og_title",
+      "message": "Missing Open Graph title",
+      "count": 4,
+      "urls": [
+        "https://example.com/",
+        "https://example.com/about",
+        "https://example.com/contact",
+        "https://example.com/pricing"
+      ],
+      "recommendation": "Add <meta property='og:title' content='...'> for social sharing"
+    },
+    {
+      "severity": "low",
+      "code": "missing_og_description",
+      "message": "Missing Open Graph description",
+      "count": 4,
+      "urls": [
+        "https://example.com/",
+        "https://example.com/about",
+        "https://example.com/contact",
+        "https://example.com/pricing"
+      ],
+      "recommendation": "Add <meta property='og:description' content='...'> for social sharing"
+    },
+    {
+      "severity": "low",
+      "code": "missing_og_image",
+      "message": "Missing Open Graph image",
+      "count": 3,
+      "urls": [
+        "https://example.com/about",
+        "https://example.com/contact",
+        "https://example.com/pricing"
+      ],
+      "recommendation": "Add <meta property='og:image' content='...'> (1200x630px recommended)"
+    },
+    {
+      "severity": "low",
+      "code": "missing_twitter_card",
+      "message": "Missing Twitter Card",
+      "count": 5,
+      "urls": [
+        "https://example.com/",
+        "https://example.com/about",
+        "https://example.com/contact",
+        "https://example.com/pricing",
+        "https://example.com/blog"
+      ],
+      "recommendation": "Add <meta name='twitter:card' content='summary_large_image'>"
+    },
+    {
+      "severity": "low",
+      "code": "missing_json_ld",
+      "message": "No structured data (JSON-LD)",
+      "count": 4,
+      "urls": [
+        "https://example.com/",
+        "https://example.com/about",
+        "https://example.com/contact",
+        "https://example.com/pricing"
+      ],
+      "recommendation": "Add JSON-LD structured data (e.g., Organization, Article, FAQ schemas)"
+    },
+    {
+      "severity": "low",
+      "code": "missing_canonical",
+      "message": "Missing canonical URL",
+      "count": 2,
+      "urls": [
+        "https://example.com/blog",
+        "https://example.com/blog/post-1"
+      ],
+      "recommendation": "Add <link rel='canonical' href='...'> to prevent duplicate content issues"
+    },
+    {
+      "severity": "low",
+      "code": "sitemap_not_in_robots",
+      "message": "Sitemap not referenced in robots.txt",
+      "count": 1,
+      "urls": [],
+      "recommendation": "Add Sitemap: directive to robots.txt"
+    },
+    {
+      "severity": "low",
+      "code": "some_images_missing_alt",
+      "message": "1 images missing alt text",
+      "urls": ["https://example.com/gallery"],
+      "recommendation": "Add alt attributes to remaining images"
+    },
+    {
+      "severity": "low",
+      "code": "title_too_short",
+      "message": "Title too short (5 chars). Recommended: 50-60 characters",
+      "urls": ["https://example.com/contact"],
+      "recommendation": "Expand your title to 50-60 characters. Include your main keyword and a compelling reason to click."
+    },
+    {
+      "severity": "medium",
+      "code": "title_too_long",
+      "message": "Title too long (75 chars). Recommended: under 60 characters",
+      "urls": ["https://example.com/pricing"],
+      "recommendation": "Shorten your title to under 60 characters for better display in search results."
+    },
+    {
+      "severity": "low",
+      "code": "description_too_short",
+      "message": "Meta description too short (20 chars). Recommended: 150-160 characters",
+      "urls": ["https://example.com/contact"],
+      "recommendation": "Expand to 150-160 characters with a clear value proposition and call-to-action."
+    },
+    {
+      "severity": "medium",
+      "code": "description_too_long",
+      "message": "Meta description too long (200 chars). Recommended: under 160 characters",
+      "urls": ["https://example.com/pricing"],
+      "recommendation": "Shorten your meta description to under 160 characters to avoid truncation in search results."
+    },
+    {
+      "severity": "medium",
+      "code": "content_too_short",
+      "message": "Content too short (150 words). Recommended: 300-500 words",
+      "urls": ["https://example.com/about"],
+      "recommendation": "Expand your content to at least 300-500 words with valuable information."
+    },
+    {
+      "severity": "medium",
+      "code": "missing_lang",
+      "message": "Missing lang attribute on <html>",
+      "urls": ["https://example.com/about", "https://example.com/contact"],
+      "recommendation": "Add lang attribute to <html> element (e.g., lang='en') for proper language declaration."
+    },
+    {
+      "severity": "low",
+      "code": "missing_apple_touch_icon",
+      "message": "Missing Apple touch icon",
+      "urls": ["https://example.com/about", "https://example.com/contact", "https://example.com/pricing"],
+      "recommendation": "Add Apple touch icon and consider modern formats like PNG and SVG for better display."
+    }
+  ],
+  "topIssues": [],
+  "pages": [
+    {
+      "url": "https://example.com/about",
+      "status": 200,
+      "title": "About",
+      "metaDescription": "Learn about us",
+      "canonical": "https://example.com/about",
+      "h1": "About Us",
+      "robotsMeta": null,
+      "xRobotsTag": null,
+      "ogTitle": null,
+      "ogDescription": null,
+      "ogImage": null,
+      "twitterCard": null,
+      "twitterTitle": null,
+      "twitterDescription": null,
+      "twitterImage": null,
+      "jsonLd": null,
+      "imagesTotal": 1,
+      "imagesWithAlt": 0,
+      "h2Count": 1,
+      "cacheControl": null,
+      "hreflangs": null,
+      "robotsBlocked": false,
+      "isPagination": false,
+      "isFeed": false,
+      "lang": null,
+      "appleTouchIcon": null,
+      "wordCount": 150
+    }
+  ],
+  "sitemap": {
+    "url": "https://example.com/sitemap.xml",
+    "urlsInSitemap": 100,
+    "urlsTested": 5,
+    "urlsWithErrors": 1,
+    "referencedInRobots": false,
+    "orphanUrls": []
+  }
+}

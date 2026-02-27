@@ -38,6 +38,9 @@ export function createEmptyPageData(
     robotsBlocked,
     isPagination,
     isFeed,
+    lang: null,
+    appleTouchIcon: null,
+    wordCount: 0,
   };
 }
 
@@ -104,6 +107,19 @@ function extractPageData(doc: Document, url: string): PageData {
     if (hl) hreflangs.push(hl);
   });
 
+  const htmlEl = doc.querySelector("html");
+  const lang = htmlEl?.getAttribute("lang")?.trim() ?? null;
+
+  const appleTouchIcon =
+    getLinkHref("apple-touch-icon") ??
+    getLinkHref("apple-touch-icon-precomposed");
+
+  const bodyText = doc.querySelector("body")?.textContent ?? "";
+  const wordCount = bodyText
+    .trim()
+    .split(/\s+/)
+    .filter((word) => word.length > 0).length;
+
   return {
     url,
     status: 200,
@@ -130,5 +146,8 @@ function extractPageData(doc: Document, url: string): PageData {
     robotsBlocked: false,
     isPagination: /\/page[\/=]\d+|\/paged?\/\d+|\/\d+\/?$/i.test(url),
     isFeed: /\/feed\/?$|\/rss\/?$|\/atom\/?$|\/sitemap\.xml$/i.test(url),
+    lang,
+    appleTouchIcon,
+    wordCount,
   };
 }

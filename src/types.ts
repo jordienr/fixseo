@@ -53,6 +53,13 @@ export const RECOMMENDATIONS: Record<string, string> = {
   sitemap_not_in_robots: "Add Sitemap: directive to robots.txt",
   sitemap_urls_error: "Fix or remove broken URLs from sitemap",
   orphan_pages: "Add internal links to these pages or remove from sitemap",
+  title_too_short: "Expand your title to 50-60 characters. Include your main keyword and a compelling reason to click.",
+  title_too_long: "Shorten your title to under 60 characters for better display in search results.",
+  description_too_short: "Expand to 150-160 characters with a clear value proposition and call-to-action.",
+  description_too_long: "Shorten your meta description to under 160 characters to avoid truncation in search results.",
+  content_too_short: "Expand your content to at least 300-500 words with valuable information.",
+  missing_lang: "Add lang attribute to <html> element (e.g., lang='en') for proper language declaration.",
+  missing_apple_touch_icon: "Add Apple touch icon and consider modern formats like PNG and SVG for better display.",
 };
 
 export type PageData = {
@@ -81,6 +88,9 @@ export type PageData = {
   robotsBlocked: boolean;
   isPagination: boolean;
   isFeed: boolean;
+  lang: string | null;
+  appleTouchIcon: string | null;
+  wordCount: number;
 };
 
 export type ScanResult = {
