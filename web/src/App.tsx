@@ -1,6 +1,16 @@
 import { useEffect, useState } from 'react'
 import Report from './components/Report'
 import demoData from '../demo.json'
+import { Search, AlertTriangle } from 'lucide-react'
+
+function initTheme() {
+  const stored = localStorage.getItem('theme')
+  if (stored === 'dark' || (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    document.documentElement.classList.add('dark')
+  }
+}
+
+initTheme()
 
 export type ScanResult = {
   scanned: {
@@ -8,6 +18,7 @@ export type ScanResult = {
     pagesScanned: number
     maxPages: number
     scannedAt: string
+    score?: number
   }
   summary: {
     high: number
@@ -79,8 +90,8 @@ function App() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="text-4xl mb-4">🔍</div>
-          <p className="text-gray-600">Loading report...</p>
+          <Search className="w-10 h-10 mx-auto mb-4 text-primary" />
+          <p className="text-muted-foreground">Loading report...</p>
         </div>
       </div>
     )
@@ -90,8 +101,8 @@ function App() {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="text-4xl mb-4">⚠️</div>
-          <p className="text-gray-600">{error}</p>
+          <AlertTriangle className="w-10 h-10 mx-auto mb-4 text-amber-500" />
+          <p className="text-muted-foreground">{error}</p>
         </div>
       </div>
     )

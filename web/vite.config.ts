@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { type ViteDevServer } from 'vite'
+import path from 'path'
 
 let reportData: unknown = null
 
@@ -43,6 +44,11 @@ export default defineConfig({
       },
     },
   ],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
   server: {
     port: 5354,
     strictPort: true,
