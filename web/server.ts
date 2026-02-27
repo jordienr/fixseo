@@ -78,5 +78,3 @@ export async function startServer(port = 5354): Promise<{ url: string; setReport
     setReportData: (data: unknown) => { reportData = data }
   }
 }
-
-startServer();

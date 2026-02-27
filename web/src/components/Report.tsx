@@ -1,26 +1,15 @@
 import { useState } from "react";
 import type { ScanResult } from "../App";
 import {
-  AlertTriangle,
   CheckCircle,
   Lightbulb,
-  ClipboardCopy,
-  Check,
   CircleCheck,
   CircleX,
-  Globe,
-  Calendar,
-  FileText,
-  ClipboardIcon,
-  BrainIcon,
-  LightbulbIcon,
 } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Gauge } from "@/components/ui/gauge";
-import { MetricBlock, MetricGrid } from "@/components/ui/metric";
-import { SeverityBadge } from "@/components/ui/severity-badge";
+import { MetricBlock } from "@/components/ui/metric";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
-import { Button } from "./ui/button";
 import {
   Tooltip,
   TooltipProvider,
@@ -226,32 +215,8 @@ function PageDetailModal({
   );
 }
 
-function generateFixPrompt(
-  issue: ScanResult["groupedIssues"][0],
-  baseUrl: string,
-): string {
-  const urlsList = issue.urls
-    .slice(0, 10)
-    .map((url) => `- ${url}`)
-    .join("\n");
-
-  return `Fix this SEO issue on the website ${baseUrl}:
-
-Issue: ${issue.message}
-Severity: ${issue.severity}
-${issue.recommendation ? `Recommendation: ${issue.recommendation}` : ""}
-
-Affected URLs (${issue.count} total):
-${urlsList}
-${issue.urls.length > 10 ? `- ...and ${issue.urls.length - 10} more` : ""}
-
-Please provide the specific code changes needed to fix this issue.`;
-}
-
 export default function Report({ data }: Props) {
-  const [copiedIdx, setCopiedIdx] = useState<number | null>(null);
   const [selectedPage, setSelectedPage] = useState<PageData | null>(null);
-  const [checkedIssues, setCheckedIssues] = useState<Set<number>>(new Set());
   const { scanned, summary, groupedIssues, pages } = data;
 
   const score =
@@ -268,26 +233,6 @@ export default function Report({ data }: Props) {
       return url;
     }
   }
-
-  const handleCopy = async (
-    issue: ScanResult["groupedIssues"][0],
-    idx: number,
-  ) => {
-    const prompt = generateFixPrompt(issue, scanned.startUrl);
-    await navigator.clipboard.writeText(prompt);
-    setCopiedIdx(idx);
-    setTimeout(() => setCopiedIdx(null), 2000);
-  };
-
-  const toggleIssue = (idx: number) => {
-    const newChecked = new Set(checkedIssues);
-    if (newChecked.has(idx)) {
-      newChecked.delete(idx);
-    } else {
-      newChecked.add(idx);
-    }
-    setCheckedIssues(newChecked);
-  };
 
   // Group issues by severity
   const issuesBySeverity = {
@@ -383,7 +328,7 @@ export default function Report({ data }: Props) {
                           {severity} ({severityIssues.length})
                         </h2>
                         <div className="">
-                          {severityIssues.map((issue, idx) => {
+                          {severityIssues.map((issue) => {
                             const globalIdx = groupedIssues.indexOf(issue);
                             return (
                               <div
@@ -431,16 +376,6 @@ export default function Report({ data }: Props) {
                                       )}
                                     </div>
                                   </div>
-
-                                  <Button
-                                    variant="secondary"
-                                    size="sm"
-                                    className="flex-shrink-0"
-                                    onClick={() => handleCopy(issue, globalIdx)}
-                                  >
-                                    <LightbulbIcon />
-                                    Copy prompt
-                                  </Button>
                                 </div>
                               </div>
                             );
