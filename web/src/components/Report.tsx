@@ -413,6 +413,9 @@ export default function Report({ data }: Props) {
                       OG
                     </th>
                     <th className="text-center py-3 px-4 font-semibold text-muted-foreground">
+                      Twitter
+                    </th>
+                    <th className="text-center py-3 px-4 font-semibold text-muted-foreground">
                       JSON-LD
                     </th>
                   </tr>
@@ -462,16 +465,43 @@ export default function Report({ data }: Props) {
                         )}
                       </td>
                       <td className="py-3 px-4 text-center">
-                        {page.ogTitle ? (
-                          <CircleCheck
-                            className="text-green-600 mx-auto"
-                            size={18}
-                          />
+                        {page.ogImage ? (
+                          <div className="relative mx-auto w-10 h-10 rounded overflow-hidden border">
+                            <img
+                              src={page.ogImage}
+                              alt="OG"
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                (e.target as HTMLImageElement).style.display = "none";
+                              }}
+                            />
+                          </div>
                         ) : (
                           <CircleX
                             className="text-destructive mx-auto"
                             size={18}
                           />
+                        )}
+                      </td>
+                      <td className="py-3 px-4 text-center">
+                        {page.twitterImage ? (
+                          <div className="relative mx-auto w-10 h-10 rounded overflow-hidden border">
+                            <img
+                              src={page.twitterImage}
+                              alt="Twitter"
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                (e.target as HTMLImageElement).style.display = "none";
+                              }}
+                            />
+                          </div>
+                        ) : page.twitterCard ? (
+                          <CircleX
+                            className="text-destructive mx-auto"
+                            size={18}
+                          />
+                        ) : (
+                          <span className="text-muted-foreground text-xs">-</span>
                         )}
                       </td>
                       <td className="py-3 px-4 text-center">
