@@ -76,7 +76,17 @@ export default tool({
         } else if (args.outputPath) {
           resolve("Report saved to " + args.outputPath + "\\n\\n" + stdout)
         } else {
-          resolve(stdout)
+          // Try to extract JSON from output
+          const jsonMatch = stdout.match(/\{[\s\S]*\}/)
+          if (jsonMatch) {
+            try {
+              resolve(JSON.parse(jsonMatch[0]))
+            } catch {
+              resolve(stdout)
+            }
+          } else {
+            resolve(stdout)
+          }
         }
       })
     })
@@ -157,7 +167,7 @@ async function main() {
     console.error("       npx fixseo opencode  # Install OpenCode tool");
     console.error("Options:");
     console.error("  --json, -j         Output JSON");
-    console.error("  --markdown, -m     Output Markdown (for copy/paste)");
+    console.error("  --markdown, -m     Output Markdown report");
     console.error("  --serve, -s        Serve interactive HTML report locally");
     console.error("  --output=<path>    Save output to file");
     console.error("  --format=<type>    Output format: json|markdown (used with --output)");
@@ -167,18 +177,24 @@ async function main() {
     process.exit(1);
   }
 
-  console.log("🔍 Starting SEO scan...");
-  console.log(`   URL: ${url}`);
-  console.log(`   Max pages: ${maxPages}`);
-  console.log(`   Max depth: ${maxDepth}`);
-  console.log(`   Sitemap: ${includeSitemap ? "yes" : "no"}`);
-  console.log("");
+  const isJsonOutput = outputJson || outputFormat === "json";
+  
+  if (!isJsonOutput) {
+    console.log("🔍 Starting SEO scan...");
+    console.log(`   URL: ${url}`);
+    console.log(`   Max pages: ${maxPages}`);
+    console.log(`   Max depth: ${maxDepth}`);
+    console.log(`   Sitemap: ${includeSitemap ? "yes" : "no"}`);
+    console.log("");
+  }
 
-  const result = await execute({ url, maxPages, maxDepth, includeSitemap });
+  const result = await execute({ url, maxPages, maxDepth, includeSitemap, silent: isJsonOutput });
 
-  console.log(
-    `\n✅ Scan complete! Found ${result.summary.high + result.summary.medium + result.summary.low} issues across ${result.pages.length} pages.\n`,
-  );
+  if (!isJsonOutput) {
+    console.log(
+      `\n✅ Scan complete! Found ${result.summary.high + result.summary.medium + result.summary.low} issues across ${result.pages.length} pages.\n`,
+    );
+  }
 
   if (outputPath) {
     const fs = await import("fs/promises");

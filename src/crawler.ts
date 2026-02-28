@@ -83,6 +83,7 @@ export default async function execute(args: Args): Promise<ScanResult> {
     const maxPages = args.maxPages ?? 25;
     const maxDepth = args.maxDepth ?? 10;
     const includeSitemap = args.includeSitemap ?? true;
+    const silent = args.silent ?? false;
 
     const cacheKey = `_=${Date.now()}`;
 
@@ -143,9 +144,11 @@ export default async function execute(args: Args): Promise<ScanResult> {
       if (depth > maxDepth) continue;
 
       visited.add(key);
-      process.stdout.write(
-        `\r📄 Scanned: ${visited.size} pages | Queue: ${queue.length}    `,
-      );
+      if (!silent) {
+        process.stdout.write(
+          `\r📄 Scanned: ${visited.size} pages | Queue: ${queue.length}    `,
+        );
+      }
 
       let res: Response;
       try {

@@ -119,4 +119,5 @@ export type Args = {
   maxPages?: number;
   maxDepth?: number;
   includeSitemap?: boolean;
+  silent?: boolean;
 };
