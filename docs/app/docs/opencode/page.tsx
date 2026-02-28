@@ -6,6 +6,25 @@ import {
   PageHeading,
   PageText,
 } from "@/components/layout/page-layout";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "OpenCode - FixSEO",
+  description: "Use FixSEO as an OpenCode tool for AI agents",
+  openGraph: {
+    title: "OpenCode - FixSEO",
+    description: "Use FixSEO as an OpenCode tool for AI agents",
+    url: "https://fixseo.dev/docs/opencode",
+    siteName: "FixSEO",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "OpenCode - FixSEO",
+    description: "Use FixSEO as an OpenCode tool for AI agents",
+  },
+};
 
 export default function OpenCodePage() {
   return (

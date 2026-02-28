@@ -6,6 +6,25 @@ import {
   PageHeading,
   PageText,
 } from "@/components/layout/page-layout";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Claude Code - FixSEO",
+  description: "Use FixSEO as a Claude Code skill for AI agents",
+  openGraph: {
+    title: "Claude Code - FixSEO",
+    description: "Use FixSEO as a Claude Code skill for AI agents",
+    url: "https://fixseo.dev/docs/claude-code",
+    siteName: "FixSEO",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Claude Code - FixSEO",
+    description: "Use FixSEO as a Claude Code skill for AI agents",
+  },
+};
 
 export default function ClaudeCodePage() {
   return (

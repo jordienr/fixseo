@@ -70,7 +70,7 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                       href={item.href}
                       onClick={onClose}
                       className={cn(
-                        "inline-block rounded-md px-2 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground",
+                        "inline-block font-medium rounded-md px-2 py-1.5 text-sm hover:bg-accent hover:text-accent-foreground",
                         {
                           "bg-accent text-accent-foreground": isCurrentPath(
                             item.href,

@@ -8,6 +8,25 @@ import {
   PageHeading,
   PageText,
 } from "@/components/layout/page-layout";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "CLI - FixSEO",
+  description: "Use FixSEO directly from the command line to audit your website's SEO",
+  openGraph: {
+    title: "CLI - FixSEO",
+    description: "Use FixSEO directly from the command line to audit your website's SEO",
+    url: "https://fixseo.dev/docs/cli",
+    siteName: "FixSEO",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "CLI - FixSEO",
+    description: "Use FixSEO directly from the command line to audit your website's SEO",
+  },
+};
 
 export default function CLIPage() {
   return (

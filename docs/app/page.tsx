@@ -6,6 +6,25 @@ import {
   PageSection,
   PageText,
 } from "@/components/layout/page-layout";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "FixSEO - CLI & OpenCode Tool for SEO analysis",
+  description: "Scan websites for SEO issues from the CLI or use as an OpenCode tool",
+  openGraph: {
+    title: "FixSEO - CLI & OpenCode Tool for SEO analysis",
+    description: "Scan websites for SEO issues from the CLI or use as an OpenCode tool",
+    url: "https://fixseo.dev",
+    siteName: "FixSEO",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "FixSEO - CLI & OpenCode Tool for SEO analysis",
+    description: "Scan websites for SEO issues from the CLI or use as an OpenCode tool",
+  },
+};
 
 export default function Home() {
   const links = [
