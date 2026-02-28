@@ -7,7 +7,7 @@ const sans = Geist({ subsets: ["latin"] });
 const mono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
 
 export const metadata: Metadata = {
-  title: "FixSEO - CLI & OpenCode Tool for SEO analysis",
+  title: "fixseo - CLI & OpenCode Tool for SEO analysis",
   description:
     "Scan websites for SEO issues from the CLI or use as an OpenCode tool",
 };

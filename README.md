@@ -1,4 +1,4 @@
-# FixSEO
+# fixseo - SEO analysis CLI
 
 SEO analysis CLI - scan websites for SEO issues directly from your terminal.
 

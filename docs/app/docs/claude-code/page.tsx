@@ -20,7 +20,7 @@ export default function ClaudeCodePage() {
         <CodeBlock language="bash" code={`npx fixseo claude`}></CodeBlock>
 
         <PageText>
-          This installs the FixSEO skill in <code>.claude/skills/fixseo/</code>{" "}
+          This installs the fixseo skill in <code>.claude/skills/fixseo/</code>{" "}
           in your current directory.
         </PageText>
       </PageSection>

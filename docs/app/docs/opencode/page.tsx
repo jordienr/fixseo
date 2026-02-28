@@ -11,7 +11,7 @@ export default function OpenCodePage() {
   return (
     <PageLayout>
       <PageTitle>OpenCode Tool</PageTitle>
-      <PageText>Use FixSEO as an OpenCode tool for AI agents.</PageText>
+      <PageText>Use fixseo as an OpenCode tool for AI agents.</PageText>
 
       <PageSection>
         <PageHeading>Installation</PageHeading>
