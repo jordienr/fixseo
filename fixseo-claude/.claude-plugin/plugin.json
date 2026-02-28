@@ -1,0 +1,9 @@
+{
+  "name": "fixseo",
+  "description": "Scan websites for SEO issues - like Ahrefs for your CLI",
+  "version": "0.8.2",
+  "author": {
+    "name": "Jordi Enric"
+  },
+  "homepage": "https://github.com/jordienr/fixseo"
+}

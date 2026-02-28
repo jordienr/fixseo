@@ -1,12 +1,10 @@
 import type { Metadata } from "next";
-import { Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
-import { ThemeToggle } from "@/components/theme-toggle";
-import Link from "next/link";
-import { cn } from "@/lib/utils";
-import { Sidebar } from "@/components/sidebar";
-const geistMono = Geist_Mono({ subsets: ["latin"] });
+import { ClientLayout } from "./client-layout";
+
+const sans = Geist({ subsets: ["latin"] });
+const mono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
 
 export const metadata: Metadata = {
   title: "FixSEO - CLI & OpenCode Tool for SEO analysis",
@@ -22,26 +20,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistMono.className} min-h-screen bg-background text-foreground antialiased`}
+        className={`${sans.className} ${mono.variable} min-h-screen bg-background text-foreground antialiased font-mono`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <div className="flex min-h-screen">
-            <Sidebar />
-
-            {/* Main content */}
-            <div className="flex-1">
-              <header className="flex h-14 items-center justify-end  px-6">
-                <ThemeToggle />
-              </header>
-              <main className="container max-w-4xl py-10 px-6">{children}</main>
-            </div>
-          </div>
-        </ThemeProvider>
+        <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
   );

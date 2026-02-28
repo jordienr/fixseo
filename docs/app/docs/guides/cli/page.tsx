@@ -1,15 +1,15 @@
+import { PageLayout, PageTitle, PageSection, PageHeading } from "@/components/layout/page-layout";
+
 export default function CLIUsagePage() {
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold">CLI Usage</h1>
-        <p className="mt-2 text-muted-foreground">
-          Detailed guide on using FixSEO from the command line.
-        </p>
-      </div>
+    <PageLayout>
+      <PageTitle>CLI Usage</PageTitle>
+      <p className="mt-2 text-muted-foreground">
+        Detailed guide on using FixSEO from the command line.
+      </p>
 
-      <section className="space-y-4">
-        <h2 className="text-xl font-semibold">Installation</h2>
+      <PageSection>
+        <PageHeading>Installation</PageHeading>
         <div className="rounded-lg bg-muted p-4">
           <pre className="text-sm">
             <code>{`# Install globally
@@ -19,10 +19,10 @@ npm install -g fixseo
 npx fixseo <url>`}</code>
           </pre>
         </div>
-      </section>
+      </PageSection>
 
-      <section className="space-y-4">
-        <h2 className="text-xl font-semibold">Basic Usage</h2>
+      <PageSection>
+        <PageHeading>Basic Usage</PageHeading>
         <div className="rounded-lg bg-muted p-4">
           <pre className="text-sm">
             <code>{`# Default: terminal-friendly output (nice to read)
@@ -32,10 +32,10 @@ npx fixseo https://example.com
 fixseo https://example.com`}</code>
           </pre>
         </div>
-      </section>
+      </PageSection>
 
-      <section className="space-y-4">
-        <h2 className="text-xl font-semibold">Options</h2>
+      <PageSection>
+        <PageHeading as="h2">Options</PageHeading>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -98,10 +98,10 @@ fixseo https://example.com`}</code>
             </tbody>
           </table>
         </div>
-      </section>
+      </PageSection>
 
-      <section className="space-y-4">
-        <h2 className="text-xl font-semibold">Examples</h2>
+      <PageSection>
+        <PageHeading as="h2">Examples</PageHeading>
         <div className="rounded-lg bg-muted p-4">
           <pre className="text-sm">
             <code>{`# Default: terminal output (readable in terminal)
@@ -124,15 +124,15 @@ fixseo https://example.com \\
   --max-depth=5`}</code>
           </pre>
         </div>
-      </section>
+      </PageSection>
 
-      <section className="space-y-4">
-        <h2 className="text-xl font-semibold">SEO Checks</h2>
+      <PageSection>
+        <PageHeading as="h2">SEO Checks</PageHeading>
         <p className="text-muted-foreground">
           FixSEO performs the following checks:
         </p>
 
-        <h3 className="font-semibold">High Priority</h3>
+        <h3 className="font-semibold mt-4">High Priority</h3>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -261,7 +261,7 @@ fixseo https://example.com \\
             </tbody>
           </table>
         </div>
-      </section>
-    </div>
+      </PageSection>
+    </PageLayout>
   );
 }

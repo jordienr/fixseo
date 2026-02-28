@@ -1,15 +1,15 @@
+import { PageLayout, PageTitle, PageSection, PageHeading } from "@/components/layout/page-layout";
+
 export default function APIPage() {
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold">API Reference</h1>
-        <p className="mt-2 text-muted-foreground">
-          Programmatic usage of FixSEO.
-        </p>
-      </div>
+    <PageLayout>
+      <PageTitle>API Reference</PageTitle>
+      <p className="mt-2 text-muted-foreground">
+        Programmatic usage of FixSEO.
+      </p>
 
-      <section className="space-y-4">
-        <h2 className="text-xl font-semibold">execute</h2>
+      <PageSection>
+        <PageHeading>execute</PageHeading>
         <p className="text-muted-foreground">
           Crawls a website and returns SEO analysis.
         </p>
@@ -78,10 +78,10 @@ const result = await execute({
 };`}</code>
           </pre>
         </div>
-      </section>
+      </PageSection>
 
-      <section className="space-y-4">
-        <h2 className="text-xl font-semibold">generateMarkdownReport</h2>
+      <PageSection>
+        <PageHeading>generateMarkdownReport</PageHeading>
         <p className="text-muted-foreground">
           Generates a Markdown report from scan results.
         </p>
@@ -92,10 +92,10 @@ const result = await execute({
 const markdown = generateMarkdownReport(result);`}</code>
           </pre>
         </div>
-      </section>
+      </PageSection>
 
-      <section className="space-y-4">
-        <h2 className="text-xl font-semibold">generateJsonReport</h2>
+      <PageSection>
+        <PageHeading>generateJsonReport</PageHeading>
         <p className="text-muted-foreground">
           Generates a JSON report from scan results.
         </p>
@@ -106,10 +106,10 @@ const markdown = generateMarkdownReport(result);`}</code>
 const json = generateJsonReport(result);`}</code>
           </pre>
         </div>
-      </section>
+      </PageSection>
 
-      <section className="space-y-4">
-        <h2 className="text-xl font-semibold">generateTerminalReport</h2>
+      <PageSection>
+        <PageHeading>generateTerminalReport</PageHeading>
         <p className="text-muted-foreground">
           Generates a terminal-friendly report from scan results.
         </p>
@@ -120,7 +120,7 @@ const json = generateJsonReport(result);`}</code>
 const terminal = generateTerminalReport(result);`}</code>
           </pre>
         </div>
-      </section>
-    </div>
+      </PageSection>
+    </PageLayout>
   );
 }

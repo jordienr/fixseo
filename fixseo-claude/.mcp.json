@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "fixseo": {
+      "command": "npx",
+      "args": ["fixseo", "--json"],
+      "env": {}
+    }
+  }
+}

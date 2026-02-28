@@ -1,51 +1,102 @@
 import { Button } from "@/components/ui/button";
 import { Terminal } from "lucide-react";
 import { CodeBlock } from "@/components/code-block";
+import {
+  PageLayout,
+  PageTitle,
+  PageSection,
+  PageHeading,
+  PageText,
+} from "@/components/layout/page-layout";
 
 export default function CLIPage() {
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold">CLI</h1>
-        <p className="mt-2 text-muted-foreground">
-          Use fixseo directly from the command line to audit your website's SEO
-          without needing to write any code. Perfect for quick checks, CI
-          integration, or generating reports for non-developers.
-        </p>
-      </div>
+    <PageLayout>
+      <PageTitle>Command Line Interface (CLI)</PageTitle>
+      <PageText className="mt-2 text-muted-foreground">
+        Use fixseo directly from the command line to audit your website's SEO
+        without needing to write any code. Perfect for quick checks, CI
+        integration, or generating reports for non-developers.
+      </PageText>
 
-      <section className="space-y-4">
-        <h2 className="text-xl font-semibold">Running fixseo</h2>
-        <p>
-          Change <span className="bg-accent">fixseo.com</span> for your
-          website's URL.
-        </p>
+      <PageSection>
+        <PageHeading>Basic usage</PageHeading>
+        <PageText className="text-muted-foreground">
+          Run the CLI, it will ask you to input your site and it will give you
+          the SEO report.
+        </PageText>
+        <CodeBlock
+          className="mt-4"
+          language="bash"
+          code={{
+            npm: "npx fixseo@latest",
+            pnpm: "pnpm dlx fixseo@latest",
+            bun: "bunx fixseo@latest",
+          }}
+        ></CodeBlock>
+        <PageText className="text-muted-foreground my-4">
+          Optionally, skip the prompt by providing your URL directly:
+        </PageText>
         <CodeBlock
           language="bash"
           code={{
-            npm: "npx fixseo@latest fixseo.com",
-            pnpm: "pnpm dlx fixseo@latest fixseo.com",
-            bun: "bunx fixseo@latest fixseo.com",
+            npm: "npx fixseo@latest example.com",
+            pnpm: "pnpm dlx fixseo@latest example.com",
+            bun: "bunx fixseo@latest example.com",
           }}
         ></CodeBlock>
-      </section>
+      </PageSection>
 
-      <section className="space-y-4">
-        <h2 className="text-xl font-semibold">Basic Usage</h2>
-        <div className="rounded-lg bg-muted p-4">
-          <pre className="text-sm">
-            <code>{`# Default: terminal-friendly output
-npx fixseo https://example.com
+      <PageSection>
+        <PageHeading>Terminal report</PageHeading>
+        <PageText className="text-muted-foreground">
+          The default command will print the SEO report directly in the
+          terminal.
+        </PageText>
+        <CodeBlock
+          className="mt-4"
+          language="terminal"
+          code={`➜  fixseo git:(main) ✗ npx fixseo@latest fixseo.dev
+🔍 Starting SEO scan...
+   URL: fixseo.dev
+   Max pages: 25
+   Max depth: 10
+   Sitemap: yes
 
-# After installing globally
-fixseo https://example.com`}</code>
-          </pre>
-        </div>
-      </section>
+📄 Scanned: 5 pages | Queue: 8
+✅ Scan complete! Found 54 issues across 5 pages.
 
-      <section className="space-y-4">
-        <h2 className="text-xl font-semibold">Options</h2>
-        <div className="overflow-x-auto">
+🔍 SEO Scan Report
+   Scanned: 5 pages
+   URL: https://fixseo.dev/
+
+📊 Summary
+   🔴 High:   0
+   🟡 Medium: 3
+   🔵 Low:    51
+   ─────────────────
+   Total:   54 issues
+
+📋 Issues
+
+   🟡 Content too short (219 words). Recommended: 300-500 words
+      Count: 1
+      → https://fixseo.dev/docs/opencode
+
+   🟡 Duplicate title: "FixSEO - CLI & OpenCode Tool for SEO analysis"
+      Count: 1
+      → https://fixseo.dev/
+
+   🟡 No sitemap.xml found
+      Count: 1
+      → https://fixseo.dev/
+          `}
+        />
+      </PageSection>
+
+      <PageSection>
+        <PageHeading as="h2">Options</PageHeading>
+        <div className="overflow-x-auto mt-4">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b">
@@ -107,13 +158,14 @@ fixseo https://example.com`}</code>
             </tbody>
           </table>
         </div>
-      </section>
+      </PageSection>
 
-      <section className="space-y-4">
-        <h2 className="text-xl font-semibold">Examples</h2>
-        <div className="rounded-lg bg-muted p-4">
-          <pre className="text-sm">
-            <code>{`# Default: terminal output
+      <PageSection>
+        <PageHeading as="h2">Examples</PageHeading>
+        <CodeBlock
+          className="mt-4"
+          language="bash"
+          code={`# Default: terminal output
 fixseo https://example.com
 
 # Export to Markdown file
@@ -130,10 +182,9 @@ fixseo https://example.com \\
   --output=seo-report.md \\
   --format=markdown \\
   --max-pages=50 \\
-  --max-depth=5`}</code>
-          </pre>
-        </div>
-      </section>
-    </div>
+  --max-depth=5`}
+        />
+      </PageSection>
+    </PageLayout>
   );
 }

@@ -1,77 +1,99 @@
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { ArrowRight, Terminal, Code2, Zap } from "lucide-react";
+import { ArrowRight, Terminal, Code2, Zap, CheckIcon } from "lucide-react";
+import {
+  PageLayout,
+  PageTitle,
+  PageSection,
+  PageText,
+} from "@/components/layout/page-layout";
 
 export default function Home() {
+  const links = [
+    {
+      href: "/docs/cli",
+      title: "CLI Tool",
+      description:
+        "Install globally or use npx to run SEO audits from your terminal.",
+    },
+    {
+      href: "/docs/opencode",
+      title: "OpenCode",
+      description: "Use as an OpenCode tool for AI agents.",
+    },
+    {
+      href: "/docs/claude-code",
+      title: "Claude Code",
+      description: "Install as a skill for Claude Code.",
+    },
+  ];
+
+  const features = [
+    {
+      title: "Multi-format Output",
+      description: "Get results in JSON, Markdown, or HTML formats.",
+    },
+    {
+      title: "Agent-friendly Output",
+      description: "Designed for easy integration with AI agents.",
+    },
+    {
+      title: "Interactive Preview",
+      description: "View results in an interactive browser interface.",
+    },
+    {
+      title: "Comprehensive SEO Checks",
+      description: "Perform in-depth SEO analysis for your projects.",
+    },
+    {
+      title: "Duplicate Detection",
+      description: "Identify and resolve duplicate content issues.",
+    },
+    {
+      title: "Broken Link Detection",
+      description: "Find and fix broken links on your website.",
+    },
+  ];
+
   return (
-    <div className="space-y-10">
-      <section className="space-y-4">
-        <h1 className="">fixseo</h1>
-        <p className="">
-          A command-line SEO analysis tool that crawls websites and generates
-          structured reports with SEO improvements. Like Ahrefs for your CLI -
-          perfect for agents to analyze and fix SEO issues.
-        </p>
-        <div className="flex gap-4">
-          <Button asChild>
-            <Link href="/docs/guides/cli">
-              Get Started <ArrowRight className="ml-2 h-4 w-4" />
-            </Link>
-          </Button>
-          <Button variant="outline" asChild>
-            <Link href="/docs/guides/api">API Reference</Link>
-          </Button>
-        </div>
-      </section>
+    <PageLayout>
+      <PageTitle>Introduction</PageTitle>
+      <PageText>fixseo is ahrefs for your CLI and coding agent.</PageText>
 
-      <section className="grid gap-6 md:grid-cols-3">
-        <div className="space-y-2 rounded-lg border bg-card p-6">
-          <Terminal className="size-4" />
-          <h3 className="font-semibold">CLI Tool</h3>
-          <p className="text-sm text-muted-foreground">
-            Install globally or use npx to run SEO audits from your terminal.
-          </p>
-        </div>
-        <div className="space-y-2 rounded-lg border bg-card p-6">
-          <Code2 className="size-4" />
-          <h3 className="font-semibold">OpenCode Tool</h3>
-          <p className="text-sm text-muted-foreground">
-            Use as an AI agent tool - tell your agent to check SEO issues.
-          </p>
-        </div>
-        <div className="space-y-2 rounded-lg border bg-card p-6">
-          <Zap className="size-4" />
-          <h3 className="font-semibold">Fast & Comprehensive</h3>
-          <p className="text-sm text-muted-foreground">
-            Checks titles, meta, OG tags, JSON-LD, canonical URLs, and more.
-          </p>
-        </div>
-      </section>
-
-      <section className="space-y-4">
-        <h2 className="text-2xl font-semibold">Features</h2>
-        <ul className="grid gap-2 md:grid-cols-2">
-          <li className="flex items-center gap-2">
-            <span className="text-primary">✓</span> Multi-format output (JSON,
-            Markdown, HTML)
-          </li>
-          <li className="flex items-center gap-2">
-            <span className="text-primary">✓</span> Interactive browser preview
-          </li>
-          <li className="flex items-center gap-2">
-            <span className="text-primary">✓</span> Comprehensive SEO checks
-          </li>
-          <li className="flex items-center gap-2">
-            <span className="text-primary">✓</span> Duplicate detection
-          </li>
-          <li className="flex items-center gap-2">
-            <span className="text-primary">✓</span> Broken link detection
-          </li>
-          <li className="flex items-center gap-2">
-            <span className="text-primary">✓</span> Agent-friendly output
-          </li>
+      <PageSection>
+        <ul className="grid gap-3">
+          {features.map((feature) => (
+            <li key={feature.title} className="flex items-start gap-3">
+              <CheckIcon className="size-4 m-0.5 text-emerald-500" />
+              <div>
+                <h3 className="text-sm font-semibold">{feature.title}</h3>
+                <p className="text-sm text-muted-foreground">
+                  {feature.description}
+                </p>
+              </div>
+            </li>
+          ))}
         </ul>
-      </section>
-    </div>
+      </PageSection>
+
+      <PageSection>
+        <div className="grid gap-4 md:grid-cols-3">
+          {links.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="flex h-full justify-between items-start rounded-xl p-4 bg-muted/60 hover:bg-muted"
+            >
+              <div>
+                <h3 className="text-lg font-semibold">{link.title}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  {link.description}
+                </p>
+              </div>
+              <ArrowRight className="size-4 mt-4 self-end text-muted-foreground" />
+            </Link>
+          ))}
+        </div>
+      </PageSection>
+    </PageLayout>
   );
 }

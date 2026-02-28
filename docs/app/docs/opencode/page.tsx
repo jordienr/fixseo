@@ -1,48 +1,49 @@
+import { CodeBlock } from "@/components/code-block";
+import {
+  PageLayout,
+  PageTitle,
+  PageSection,
+  PageHeading,
+  PageText,
+} from "@/components/layout/page-layout";
+
 export default function OpenCodePage() {
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold">OpenCode Tool</h1>
-        <p className="mt-2 text-muted-foreground">
-          Use FixSEO as an OpenCode tool for AI agents.
-        </p>
-      </div>
+    <PageLayout>
+      <PageTitle>OpenCode Tool</PageTitle>
+      <PageText>Use FixSEO as an OpenCode tool for AI agents.</PageText>
 
-      <section className="space-y-4">
-        <h2 className="text-xl font-semibold">Installation</h2>
-        <div className="rounded-lg bg-muted p-4">
-          <pre className="text-sm">
-            <code>npx fixseo opencode</code>
-          </pre>
-        </div>
-        <p className="text-sm text-muted-foreground">
+      <PageSection>
+        <PageHeading>Installation</PageHeading>
+        <CodeBlock
+          language="bash"
+          code={`npx fixseo@latest opencode`}
+        ></CodeBlock>
+        <PageText>
           This installs the OpenCode tool in <code>.opencode/tools/</code>.
-        </p>
-      </section>
+        </PageText>
+      </PageSection>
 
-      <section className="space-y-4">
-        <h2 className="text-xl font-semibold">Usage</h2>
-        <p className="text-muted-foreground">
+      <PageSection>
+        <PageHeading>Usage</PageHeading>
+        <PageText>
           After installing, tell your agent to check SEO for a URL:
-        </p>
-        <div className="rounded-lg bg-muted p-4">
-          <pre className="text-sm">
-            <code>{`Run a FixSEO scan on https://example.com and show me the results.`}</code>
-          </pre>
-        </div>
-      </section>
+        </PageText>
+        <CodeBlock
+          language="opencode"
+          code={`> Run a fixseo scan on localhost:3000 and fix any issues it finds.`}
+        ></CodeBlock>
+      </PageSection>
 
-      <section className="space-y-4">
-        <h2 className="text-xl font-semibold">Natural Language Prompts</h2>
-        <p className="text-muted-foreground">
-          You can use natural language with the tool:
-        </p>
+      <PageSection>
+        <PageHeading>Natural Language Prompts</PageHeading>
+        <PageText>You can use natural language with the tool:</PageText>
         <ul className="list-inside list-disc space-y-2 text-muted-foreground">
-          <li>{"\"Hey OpenCode, scan and fix SEO issues for mywebsite.com\""}</li>
-          <li>{"\"Check the SEO on https://example.com and save a report\""}</li>
-          <li>{"\"Analyze my site for SEO problems\""}</li>
+          <li>{'"Hey OpenCode, scan and fix SEO issues for mywebsite.com"'}</li>
+          <li>{'"Check the SEO on https://example.com and save a report"'}</li>
+          <li>{'"Analyze my site for SEO problems"'}</li>
         </ul>
-      </section>
-    </div>
+      </PageSection>
+    </PageLayout>
   );
 }

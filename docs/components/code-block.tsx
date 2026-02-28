@@ -75,25 +75,22 @@ export function CodeBlock({ code, language, className }: CodeBlockProps) {
   return (
     <div className={cn("overflow-hidden rounded-lg bg-muted/50", className)}>
       {/* Toolbar */}
-      <div className="flex items-center justify-between pr-1 pl-1.5">
+      <div className="flex border-b border-muted items-center justify-between pr-1 pl-1.5">
         <div className="flex items-center gap-2">
           {/* PM tabs or language label */}
           {hasPmPicker ? (
-            <div className="flex items-center">
+            <div className="flex items-center h-full py-1.5">
               {PACKAGE_MANAGERS.map((manager) => (
                 <button
                   key={manager}
                   onClick={() => selectPm(manager)}
                   className={cn(
-                    "relative cursor-pointer px-2.5 py-2.5 text-sm font-medium transition-colors",
+                    "relative cursor-pointer px-2 py-1 text-sm font-medium transition-colors rounded-sm",
                     pm === manager
-                      ? "text-foreground"
+                      ? "text-foreground bg-accent"
                       : "text-muted-foreground hover:text-foreground/80",
                   )}
                 >
-                  {pm === manager && (
-                    <span className="absolute inset-x-1 -bottom-px h-0.5 rounded-full bg-foreground" />
-                  )}
                   {manager}
                 </button>
               ))}
@@ -120,7 +117,7 @@ export function CodeBlock({ code, language, className }: CodeBlockProps) {
       </div>
 
       {/* Code content */}
-      <div className="overflow-x-auto p-4">
+      <div className="px-4 py-2 max-h-100 overflow-auto">
         <pre className="text-sm leading-relaxed">
           <code className="font-mono text-foreground">{displayCode}</code>
         </pre>

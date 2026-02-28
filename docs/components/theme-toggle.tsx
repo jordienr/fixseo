@@ -24,8 +24,10 @@ export function ThemeToggle() {
   return (
     <Button
       variant="ghost"
-      size="icon"
+      size="icon-sm"
       onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+      className="text-muted-foreground"
+      title="Toggle theme"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
