@@ -18,7 +18,10 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "coverage": "vitest run --coverage",
-    "pub": "npm publish --access public"
+    "pub": "npm publish --access public",
+    "bump:patch": "npm version patch",
+    "bump:minor": "npm version minor",
+    "bump:major": "npm version major"
   },
   "keywords": [
     "seo",

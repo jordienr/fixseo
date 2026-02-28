@@ -103,9 +103,10 @@ export default tool({
     console.log("✅ OpenCode tool installed!");
     console.log(`   Created: ${toolPath}`);
     console.log("");
-    console.log("Usage in OpenCode: fixseo https://example.com");
+    console.log("Usage examples:");
+    console.log("  \"Hey OpenCode, scan and fix SEO issues for mywebsite.com\"");
+    console.log("  fixseo https://example.com");
     console.log("Options:");
-    console.log("  fixseo <url>                           # JSON output");
     console.log("  fixseo <url>, outputFormat: 'markdown'  # Markdown report");
     console.log("  fixseo <url>, serve: true               # Open web UI");
     console.log("  fixseo <url>, outputPath: './seo.md'    # Save to file");
