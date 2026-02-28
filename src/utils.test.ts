@@ -9,9 +9,9 @@ describe("normalizeUrl", () => {
     );
   });
 
-  it("should return the input for invalid URLs", () => {
-    expect(normalizeUrl("not-a-url")).toBe("not-a-url");
-    expect(normalizeUrl("")).toBe("");
+  it("should add https:// prefix to URLs without protocol", () => {
+    expect(normalizeUrl("not-a-url")).toBe("https://not-a-url/");
+    expect(normalizeUrl("example.com")).toBe("https://example.com/");
   });
 });
 

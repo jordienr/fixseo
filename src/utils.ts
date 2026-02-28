@@ -1,6 +1,10 @@
 export function normalizeUrl(u: string): string {
+  let urlToNormalize = u;
+  if (!u.startsWith("http://") && !u.startsWith("https://")) {
+    urlToNormalize = "https://" + u;
+  }
   try {
-    return new URL(u).toString();
+    return new URL(urlToNormalize).toString();
   } catch {
     return u;
   }
