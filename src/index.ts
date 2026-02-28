@@ -163,19 +163,23 @@ export async function main() {
   }
 
   if (!url) {
-    console.error("Usage: fixseo <url> [options]");
-    console.error("       npx fixseo <url> [options]");
-    console.error("       npx fixseo opencode  # Install OpenCode tool");
-    console.error("Options:");
-    console.error("  --json, -j         Output JSON");
-    console.error("  --markdown, -m     Output Markdown report");
-    console.error("  --serve, -s        Serve interactive HTML report locally");
-    console.error("  --output=<path>    Save output to file");
-    console.error("  --format=<type>    Output format: json|markdown (used with --output)");
-    console.error("  --max-pages=<n>    Max pages to crawl (default: 25)");
-    console.error("  --max-depth=<n>    Max crawl depth (default: 10)");
-    console.error("  --no-sitemap       Disable sitemap crawling");
-    process.exit(1);
+    const readline = await import("readline");
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
+    
+    url = await new Promise<string>((resolve) => {
+      rl.question("Enter the URL to scan: ", (answer) => {
+        rl.close();
+        resolve(answer.trim());
+      });
+    });
+    
+    if (!url) {
+      console.error("Error: Please enter a valid URL");
+      process.exit(1);
+    }
   }
 
   const isJsonOutput = outputJson || outputFormat === "json";
