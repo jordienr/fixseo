@@ -1,2 +1,4 @@
-#!/usr/bin/env bun
-import "../src/index.ts";
+#!/usr/bin/env node
+import { main } from "../dist/index.js";
+
+main().catch(console.error);

@@ -2,6 +2,28 @@ import { describe, it, expect } from "vitest";
 import { spawn } from "child_process";
 import { installOpenCodeTool } from "./index";
 
+describe("CLI", () => {
+  it("should run CLI and produce output", async () => {
+    const proc = spawn("node", ["bin/main", "example.com", "--max-pages=1"], {
+      cwd: process.cwd(),
+    });
+
+    let stdout = "";
+    let stderr = "";
+
+    proc.stdout.on("data", (data) => { stdout += data.toString(); });
+    proc.stderr.on("data", (data) => { stderr += data.toString(); });
+
+    await new Promise<void>((resolve) => {
+      proc.on("close", () => resolve());
+    });
+
+    expect(stderr).not.toContain("Error");
+    expect(stderr).not.toContain("error:");
+    expect(stdout).toContain("Scan complete");
+  }, 30000);
+});
+
 describe("installOpenCodeTool", () => {
   it("should generate valid TypeScript code", async () => {
     const fs = await import("fs/promises");

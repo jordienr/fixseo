@@ -1,9 +1,14 @@
 {
   "name": "fixseo",
-  "version": "0.8.0",
+  "version": "0.8.2",
   "description": "SEO analysis CLI and OpenCode tool - scan websites for SEO issues",
   "type": "module",
-  "main": "./src/index.ts",
+  "main": "./dist/index.js",
+  "files": [
+    "dist",
+    "bin",
+    "src"
+  ],
   "exports": {
     ".": "./src/index.ts",
     "./tool": "./src/tool.ts"
@@ -13,12 +18,13 @@
   },
   "scripts": {
     "cli": "bun run src/index.ts",
+    "build": "bun build src/index.ts --outdir=dist --target=node",
     "dev": "cd web && npm run dev",
     "dev:serve": "bun run web/server.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "coverage": "vitest run --coverage",
-    "pub": "npm publish --access public",
+    "pub": "npm run build && npm test && npm publish --access public",
     "bump:patch": "npm version patch",
     "bump:minor": "npm version minor",
     "bump:major": "npm version major"

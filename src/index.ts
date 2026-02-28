@@ -116,7 +116,7 @@ export default tool({
   }
 }
 
-async function main() {
+export async function main() {
   const args = process.argv.slice(2);
 
   if (args[0] === "opencode") {
