@@ -8,6 +8,18 @@ export * from "./reports";
 import execute from "./crawler";
 import { generateTerminalReport, generateMarkdownReport, generateJsonReport, serveReactReport } from "./reports";
 
+async function getCliVersion(): Promise<string> {
+  try {
+    const fs = await import("fs/promises");
+    const packageJsonPath = new URL("../package.json", import.meta.url);
+    const packageJsonRaw = await fs.readFile(packageJsonPath, "utf-8");
+    const packageJson = JSON.parse(packageJsonRaw) as { version?: string };
+    return packageJson.version || "unknown";
+  } catch {
+    return "unknown";
+  }
+}
+
 export async function installOpenCodeTool() {
   const fs = await import("fs/promises");
   const path = await import("path");
@@ -168,6 +180,12 @@ If the user doesn't provide a URL, ask them to specify which website to scan.
 
 export async function main() {
   const args = process.argv.slice(2);
+  const showVersion = args.includes("--version") || args.includes("-v");
+
+  if (showVersion) {
+    console.log(await getCliVersion());
+    return;
+  }
 
   if (args[0] === "opencode") {
     await installOpenCodeTool();
