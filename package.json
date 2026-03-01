@@ -18,7 +18,8 @@
   },
   "scripts": {
     "cli": "bun run src/index.ts",
-    "build": "bun build src/index.ts --outdir=dist --target=node",
+    "build": "bun build src/index.ts --outdir=dist --target=node && npm run build:web-assets",
+    "build:web-assets": "mkdir -p dist/web-dist && cp -R web/dist/. dist/web-dist/",
     "dev": "cd web && npm run dev",
     "dev:docs": "cd docs && npm run dev",
     "dev:serve": "bun run web/server.ts",

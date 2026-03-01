@@ -274,15 +274,6 @@ export async function main() {
   }
 
   if (serve) {
-    const { existsSync } = await import("fs");
-    const webDistPath = new URL("../web/dist", import.meta.url).pathname;
-    if (!existsSync(webDistPath)) {
-      console.log("Building web app...");
-      await Bun.spawn(["npm", "run", "build"], {
-        cwd: new URL("../web", import.meta.url).pathname,
-        stdio: "inherit",
-      });
-    }
     await serveReactReport(result);
     return;
   }

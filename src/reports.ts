@@ -1,7 +1,8 @@
+import { spawn } from "node:child_process";
 import type { ScanResult } from "./types";
 
 export function generateTerminalReport(result: ScanResult): string {
-  const { scanned, summary, groupedIssues, pages } = result;
+  const { scanned, summary, groupedIssues } = result;
   const total = summary.high + summary.medium + summary.low;
 
   const escape = (s: string) => s.replace(/</g, "‹").replace(/>/g, "›");
@@ -26,7 +27,8 @@ export function generateTerminalReport(result: ScanResult): string {
     lines.push(`📋 Issues`);
     lines.push(``);
     for (const issue of groupedIssues) {
-      const icon = issue.severity === "high" ? "🔴" : issue.severity === "medium" ? "🟡" : "🔵";
+      const icon =
+        issue.severity === "high" ? "🔴" : issue.severity === "medium" ? "🟡" : "🔵";
       lines.push(`   ${icon} ${escape(issue.message)}`);
       lines.push(`      Count: ${issue.count}`);
       if (issue.urls.length <= 3) {
@@ -118,18 +120,38 @@ export function generateMarkdownReport(result: ScanResult): string {
   return lines.join("\n");
 }
 
-export async function serveReactReport(result: ScanResult, port = 5354) {
-  const { startServer } = await import("../web/server");
-  
-  const { url, setReportData } = await startServer(port);
-  
-  await setReportData(result);
-  
-  console.log(`\n🌐 Opening SEO report at ${url}\n`);
+function openBrowser(url: string) {
+  let command: string;
+  let args: string[];
+
+  if (process.platform === "darwin") {
+    command = "open";
+    args = [url];
+  } else if (process.platform === "win32") {
+    command = "cmd";
+    args = ["/c", "start", "", url];
+  } else {
+    command = "xdg-open";
+    args = [url];
+  }
 
   try {
-    await Bun.spawn(["open", url]);
+    const proc = spawn(command, args, {
+      stdio: "ignore",
+      detached: true,
+    });
+    proc.unref();
   } catch {
-    // Ignore if can't open
+    // Browser open is best effort.
   }
+}
+
+export async function serveReactReport(result: ScanResult, port = 5354) {
+  const { startServer } = await import("../web/server");
+  const { url, setReportData } = await startServer(port);
+  setReportData(result);
+
+  console.log(`\n🌐 Opening SEO report at ${url}\n`);
+  console.log(`Press Ctrl+C to stop the server.\n`);
+  openBrowser(url);
 }
