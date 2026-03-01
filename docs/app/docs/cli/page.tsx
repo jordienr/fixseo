@@ -34,12 +34,14 @@ export const metadata: Metadata = {
 export default function CLIPage() {
   return (
     <PageLayout>
-      <PageTitle>Command Line Interface (CLI)</PageTitle>
-      <PageText>
-        Use fixseo directly from the command line to audit your website's SEO
-        without needing to write any code. Perfect for quick checks, CI
-        integration, or generating reports for non-developers.
-      </PageText>
+      <PageSection>
+        <PageTitle>Command Line Interface (CLI)</PageTitle>
+        <PageText>
+          Use fixseo directly from the command line to audit your website's SEO
+          without needing to write any code. Perfect for quick checks, CI
+          integration, or generating reports for non-developers.
+        </PageText>
+      </PageSection>
 
       <PageSection>
         <PageHeading>Basic usage</PageHeading>

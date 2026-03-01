@@ -1,5 +1,12 @@
 import Link from "next/link";
-import { ArrowRight, Terminal, Code2, Zap, CheckIcon } from "lucide-react";
+import {
+  ArrowRight,
+  Terminal,
+  Code2,
+  Zap,
+  CheckIcon,
+  Quote,
+} from "lucide-react";
 import {
   PageLayout,
   PageTitle,
@@ -10,10 +17,12 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "FixSEO - CLI & OpenCode Tool for SEO analysis",
-  description: "Scan websites for SEO issues from the CLI or use as an OpenCode tool",
+  description:
+    "Scan websites for SEO issues from the CLI or use as an OpenCode tool",
   openGraph: {
     title: "FixSEO - CLI & OpenCode Tool for SEO analysis",
-    description: "Scan websites for SEO issues from the CLI or use as an OpenCode tool",
+    description:
+      "Scan websites for SEO issues from the CLI or use as an OpenCode tool",
     url: "https://fixseo.dev",
     siteName: "FixSEO",
     locale: "en_US",
@@ -22,7 +31,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "FixSEO - CLI & OpenCode Tool for SEO analysis",
-    description: "Scan websites for SEO issues from the CLI or use as an OpenCode tool",
+    description:
+      "Scan websites for SEO issues from the CLI or use as an OpenCode tool",
   },
 };
 
@@ -75,8 +85,17 @@ export default function Home() {
 
   return (
     <PageLayout>
-      <PageTitle>Introduction</PageTitle>
-      <PageText>fixseo is ahrefs for your CLI and coding agent.</PageText>
+      <PageSection>
+        <PageTitle>Introduction</PageTitle>
+        <PageText>
+          Fixseo gives your coding agent the tools it needs to find and fix all
+          your SEO issues.
+          <br /> Like ahrefs for your terminal.
+        </PageText>
+        <PageText className="bg-accent p-2 px-3 rounded-xl inline-block">
+          <em>"claude fix all my SEO issues, make no mistakes." - You</em>
+        </PageText>
+      </PageSection>
 
       <PageSection>
         <ul className="grid gap-3">
@@ -100,15 +119,17 @@ export default function Home() {
             <Link
               key={link.href}
               href={link.href}
-              className="flex h-full justify-between items-start rounded-xl p-4 bg-muted/60 hover:bg-muted"
+              className="flex h-full justify-between items-end rounded-xl p-4 bg-accent hover:bg-accent/90 transition-colors"
             >
-              <div>
+              <div className="flex-col h-full items-start">
                 <h3 className="text-lg font-semibold">{link.title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground">
                   {link.description}
                 </p>
               </div>
-              <ArrowRight className="size-4 mt-4 self-end text-muted-foreground" />
+              <div>
+                <ArrowRight className="size-4 self-end text-muted-foreground" />
+              </div>
             </Link>
           ))}
         </div>

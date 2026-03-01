@@ -29,9 +29,10 @@ export const metadata: Metadata = {
 export default function OpenCodePage() {
   return (
     <PageLayout>
-      <PageTitle>OpenCode Tool</PageTitle>
-      <PageText>Use fixseo as an OpenCode tool for AI agents.</PageText>
-
+      <PageSection>
+        <PageTitle>OpenCode Tool</PageTitle>
+        <PageText>Use fixseo as an OpenCode tool for AI agents.</PageText>
+      </PageSection>
       <PageSection>
         <PageHeading>Installation</PageHeading>
         <CodeBlock

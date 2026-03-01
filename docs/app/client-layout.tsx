@@ -49,7 +49,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
               <ThemeToggle />
             </div>
           </header>
-          <main className="container max-w-4xl py-2 px-6">{children}</main>
+          <main className="max-w-4xl py-2 px-6">{children}</main>
         </div>
       </div>
     </ThemeProvider>
