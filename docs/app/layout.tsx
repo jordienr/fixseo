@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ClientLayout } from "./client-layout";
+import { Analytics } from "@vercel/analytics/next";
 
 const sans = Geist({ subsets: ["latin"] });
 const mono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
@@ -23,6 +24,7 @@ export default function RootLayout({
         className={`${sans.className} ${mono.variable} min-h-screen bg-background text-foreground antialiased font-mono`}
       >
         <ClientLayout>{children}</ClientLayout>
+        <Analytics />
       </body>
     </html>
   );

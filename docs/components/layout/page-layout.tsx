@@ -26,7 +26,7 @@ type PageSectionProps = {
 };
 export const PageSection = ({ children, className }: PageSectionProps) => {
   return (
-    <section className={cn("mt-6 space-y-3", className)}>{children}</section>
+    <section className={cn("mt-8 space-y-3", className)}>{children}</section>
   );
 };
 
@@ -38,7 +38,9 @@ type PageHeadingProps = {
 export const PageHeading = ({ children, className, as }: PageHeadingProps) => {
   const Tag = as || "h2";
   return (
-    <Tag className={cn("text-lg font-medium mt-4", className)}>{children}</Tag>
+    <Tag className={cn("text-lg font-medium mt-4 mb-0", className)}>
+      {children}
+    </Tag>
   );
 };
 

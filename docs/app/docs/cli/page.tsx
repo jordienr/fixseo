@@ -12,10 +12,12 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "CLI - FixSEO",
-  description: "Use FixSEO directly from the command line to audit your website's SEO",
+  description:
+    "Use FixSEO directly from the command line to audit your website's SEO",
   openGraph: {
     title: "CLI - FixSEO",
-    description: "Use FixSEO directly from the command line to audit your website's SEO",
+    description:
+      "Use FixSEO directly from the command line to audit your website's SEO",
     url: "https://fixseo.dev/docs/cli",
     siteName: "FixSEO",
     locale: "en_US",
@@ -24,7 +26,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "CLI - FixSEO",
-    description: "Use FixSEO directly from the command line to audit your website's SEO",
+    description:
+      "Use FixSEO directly from the command line to audit your website's SEO",
   },
 };
 
@@ -32,7 +35,7 @@ export default function CLIPage() {
   return (
     <PageLayout>
       <PageTitle>Command Line Interface (CLI)</PageTitle>
-      <PageText className="mt-2 text-muted-foreground">
+      <PageText>
         Use fixseo directly from the command line to audit your website's SEO
         without needing to write any code. Perfect for quick checks, CI
         integration, or generating reports for non-developers.
@@ -40,12 +43,11 @@ export default function CLIPage() {
 
       <PageSection>
         <PageHeading>Basic usage</PageHeading>
-        <PageText className="text-muted-foreground">
+        <PageText>
           Run the CLI, it will ask you to input your site and it will give you
           the SEO report.
         </PageText>
         <CodeBlock
-          className="mt-4"
           language="bash"
           code={{
             npm: "npx fixseo@latest",
@@ -68,7 +70,7 @@ export default function CLIPage() {
 
       <PageSection>
         <PageHeading>Terminal report</PageHeading>
-        <PageText className="text-muted-foreground">
+        <PageText>
           The default command will print the SEO report directly in the
           terminal.
         </PageText>

@@ -18,11 +18,11 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
       enableSystem
       disableTransitionOnChange
     >
-      <div className="flex min-h-screen">
+      <div className="flex min-h-screen md:h-screen md:overflow-hidden">
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
         {/* Main content */}
-        <div className="flex-1">
+        <div className="flex-1 min-w-0 md:h-screen md:overflow-y-auto">
           <header className="flex pt-2 items-center justify-between px-4 md:justify-end">
             <button
               onClick={() => setSidebarOpen(true)}

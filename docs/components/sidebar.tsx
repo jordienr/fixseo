@@ -42,7 +42,7 @@ export const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-50 w-64 border-r bg-card px-4 py-8 transition-transform duration-200 md:relative md:translate-x-0 md:block",
+          "fixed inset-y-0 left-0 z-50 w-64 border-r bg-card px-4 py-8 transition-transform duration-200 md:sticky md:top-0 md:h-screen md:overflow-y-auto md:flex-shrink-0 md:translate-x-0 md:block",
           !isOpen && "-translate-x-full md:translate-x-0",
         )}
       >
