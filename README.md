@@ -37,7 +37,7 @@ npx fixseo https://example.com --max-pages=50 # Limit pages
 npx fixseo opencode                            # Install OpenCode tool
 ```
 
-For complete documentation, see: https://fixseo.deno.dev/docs
+For complete documentation, see: https://fixseo.dev/
 
 ## Development
 
